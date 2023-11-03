@@ -19,8 +19,10 @@
 		D94389C32AE2EB7E002B1D65 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D94389C12AE2EB7E002B1D65 /* LaunchScreen.storyboard */; };
 		D94389CE2AE2EB7F002B1D65 /* PokedexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94389CD2AE2EB7F002B1D65 /* PokedexTests.swift */; };
 		D94389D92AE2EB7F002B1D65 /* PokedexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94389D82AE2EB7F002B1D65 /* PokedexUITests.swift */; };
+		D94565532AF552A700E7B564 /* Pokemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94565522AF552A700E7B564 /* Pokemon.swift */; };
 		D94889F02AF174F2001C08C2 /* CollectionViewPokeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D94889EE2AF174F2001C08C2 /* CollectionViewPokeCell.xib */; };
 		D9488A002AF17A9F001C08C2 /* CollectionViewCellPokeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94889FF2AF17A9F001C08C2 /* CollectionViewCellPokeCell.swift */; };
+		D9495D662AF5594D0072C981 /* APIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9495D652AF5594D0072C981 /* APIController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,8 +64,10 @@
 		D94389D42AE2EB7F002B1D65 /* PokedexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokedexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D94389D82AE2EB7F002B1D65 /* PokedexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokedexUITests.swift; sourceTree = "<group>"; };
 		D94389DA2AE2EB7F002B1D65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D94565522AF552A700E7B564 /* Pokemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pokemon.swift; sourceTree = "<group>"; };
 		D94889EE2AF174F2001C08C2 /* CollectionViewPokeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewPokeCell.xib; sourceTree = "<group>"; };
 		D94889FF2AF17A9F001C08C2 /* CollectionViewCellPokeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCellPokeCell.swift; sourceTree = "<group>"; };
+		D9495D652AF5594D0072C981 /* APIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIController.swift; sourceTree = "<group>"; };
 		E57B65D0BF9EEE7331877DD9 /* Pods-PokedexTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokedexTests.release.xcconfig"; path = "Target Support Files/Pods-PokedexTests/Pods-PokedexTests.release.xcconfig"; sourceTree = "<group>"; };
 		EBC644C0D27B7E1B594CCB76 /* Pods-Pokedex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pokedex.debug.xcconfig"; path = "Target Support Files/Pods-Pokedex/Pods-Pokedex.debug.xcconfig"; sourceTree = "<group>"; };
 		FB3C1878CC414B4527A8209D /* Pods-Pokedex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pokedex.release.xcconfig"; path = "Target Support Files/Pods-Pokedex/Pods-Pokedex.release.xcconfig"; sourceTree = "<group>"; };
@@ -123,6 +127,8 @@
 		D90C79442AE2EFD800047950 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D94565522AF552A700E7B564 /* Pokemon.swift */,
+				D9495D652AF5594D0072C981 /* APIController.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -491,8 +497,10 @@
 			files = (
 				D94389BB2AE2EB7A002B1D65 /* DashboardViewController.swift in Sources */,
 				D94389B72AE2EB7A002B1D65 /* AppDelegate.swift in Sources */,
+				D9495D662AF5594D0072C981 /* APIController.swift in Sources */,
 				D9488A002AF17A9F001C08C2 /* CollectionViewCellPokeCell.swift in Sources */,
 				D94389B92AE2EB7A002B1D65 /* SceneDelegate.swift in Sources */,
+				D94565532AF552A700E7B564 /* Pokemon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,15 +9,19 @@ import UIKit
 
 class DashboardViewController: UIViewController {
     
+    //MARK: Initial
     @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
+    private var pokemonArray: [Pokemon] = [] //chamar metodo para popular no didLoad
+    private var apiController: APIController = APIController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
         setupVisualStructure()
         setupCollectionView()
+        self.pokemonArray = apiController.getData()
     }
     
     //MARK: setup functions
@@ -35,7 +39,7 @@ class DashboardViewController: UIViewController {
     private func setupCollectionView() {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        self.collectionView.register(UINib(nibName: "CollectionViewPokeCell", bundle: nil), forCellWithReuseIdentifier: "PokeCell")
+        self.collectionView.register(UINib(nibName: "CollectionViewCellPokeCell", bundle: nil), forCellWithReuseIdentifier: "PokeCell")
     }
 
 }
@@ -47,11 +51,13 @@ class DashboardViewController: UIViewController {
 extension DashboardViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return pokemonArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PokeCell", for: indexPath) as! CollectionViewCellPokeCell
+        let pokemon = pokemonArray[indexPath.row]
+        cell.bind(pokemon: pokemon)
         return cell
     }
 
