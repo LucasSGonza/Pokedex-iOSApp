@@ -33,12 +33,14 @@ class CollectionViewCellPokeCell: UICollectionViewCell {
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOpacity = 0.80
         self.layer.shadowOffset = CGSize(width: 0, height: 1)
+        
     }
     
     func bind(pokemon: Pokemon) {
         self.pokemon = pokemon
         self.name.text = pokemon.name
         self.id.text = pokemon.id.description
+//        self.photo.load(urlString: pokemon.sprites.other.officialArtwork.front_default)
     }
     
 }

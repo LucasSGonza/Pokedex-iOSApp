@@ -72,6 +72,11 @@
                 </constraints>
             </collectionViewCellContentView>
             <size key="customSize" width="333" height="316"/>
+            <connections>
+                <outlet property="id" destination="uKm-IO-RXa" id="IMc-MO-uOT"/>
+                <outlet property="name" destination="d20-1N-emK" id="sRX-qZ-bR5"/>
+                <outlet property="photo" destination="76K-bD-KHc" id="wW7-YG-QBM"/>
+            </connections>
             <point key="canvasLocation" x="304.34782608695656" y="81.696428571428569"/>
         </collectionViewCell>
     </objects>

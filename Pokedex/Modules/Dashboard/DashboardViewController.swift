@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class DashboardViewController: UIViewController {
     
@@ -14,18 +15,19 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
     private var pokemonArray: [Pokemon] = [] //chamar metodo para popular no didLoad
-    private var apiController: APIController = APIController()
+//    private var apiHelper: APIHelper = APIHelper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
         setupVisualStructure()
         setupCollectionView()
-        self.pokemonArray = apiController.getData()
+//        apiHelper.getData()
+        getData()
     }
     
     //MARK: setup functions
-    func setupVisualStructure() {
+    private func setupVisualStructure() {
         filterButton.backgroundColor = UIColor.white
         filterButton.layer.cornerRadius = 16
         collectionView.backgroundColor = UIColor.white
@@ -39,7 +41,7 @@ class DashboardViewController: UIViewController {
     private func setupCollectionView() {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        self.collectionView.register(UINib(nibName: "CollectionViewCellPokeCell", bundle: nil), forCellWithReuseIdentifier: "PokeCell")
+        self.collectionView.register(UINib(nibName: "CollectionViewPokeCell", bundle: nil), forCellWithReuseIdentifier: "PokeCell")
     }
 
 }
@@ -61,6 +63,30 @@ extension DashboardViewController: UICollectionViewDelegate, UICollectionViewDat
         return cell
     }
 
-    
 }
 
+//MARK: API req's
+extension DashboardViewController {
+    
+    private func getData() {
+        for id in 1...5 {
+            let url = "https://pokeapi.co/api/v2/pokemon/\(id)"
+            Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
+                .responseJSON { response in
+                    switch response.result {
+                        case .success:
+                            if let data = response.data {
+                                do {
+                                    guard let pokemon: Pokemon = try? JSONDecoder().decode(Pokemon.self, from: data) else { return }
+                                    self.pokemonArray.append(pokemon)
+                                    self.collectionView.reloadData()
+                                }
+                            }
+                        case .failure:
+                            break;
+                        }
+                }
+        }
+    }
+    
+}
