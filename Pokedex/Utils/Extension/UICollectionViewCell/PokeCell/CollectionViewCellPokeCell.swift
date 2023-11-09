@@ -39,8 +39,25 @@ class CollectionViewCellPokeCell: UICollectionViewCell {
     func bind(pokemon: Pokemon) {
         self.pokemon = pokemon
         self.name.text = pokemon.name
-        self.id.text = pokemon.id.description
-//        self.photo.load(urlString: pokemon.sprites.other.officialArtwork.front_default)
+        self.id.text = setupVisualForId(id: pokemon.id)
+//        self.photo.load(urlString: pokemon.sprites.other)
+        self.photo.load(urlString: pokemon.sprites.front_default)
+    }
+    
+    func setupVisualForId (id: Int) -> String {
+        switch true {
+        case id < 10:
+            return "#00\(id)"
+            
+        case id < 100:
+            return "#0\(id)"
+            
+        case id >= 100:
+            return "#\(id)"
+        
+        default:
+            return ""
+        }
     }
     
 }

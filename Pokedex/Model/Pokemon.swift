@@ -21,25 +21,32 @@ class Pokemon: Decodable {
 //    private var stats: [(String)]
     
     struct Sprites: Decodable {
-        var other: Other
-    }
-
-    struct Other: Decodable {
-        var officialArtwork: OfficialArtWork
-    }
-
-    struct OfficialArtWork: Decodable {
         var front_default: String
     }
     
-    enum CodingStringKeys: String, CodingKey {
-        //the string values should match EXACTLY with the corresponding key in the JSON object
-        case name = "name"
-        case id = "id"
-        case officialArtwork = "official-artwork"
-        case other = "other"
-        case sprites = "sprites"
-        case front_default = "front_default"
-    }
+        func showInfos() -> String {
+            return """
+            ID: \(self.id)
+            Name: \(self.name)
+            PhotoURL: \(self.sprites.front_default)
+            """
+        }
+    
+//    struct Sprites: Decodable {
+//        var other: Other
+//    }
+//
+//    struct Other: Decodable {
+//        var officialArtwork: OfficialArtWork
+//    }
+//
+//    struct OfficialArtWork: Decodable {
+//        var front_default: String
+//    }
+//
+//    enum CodingStringKeys: String, CodingKey {
+//        //the string values should match EXACTLY with the corresponding key in the JSON object
+//        case officialArtwork = "official-artwork"
+//    }
     
 }

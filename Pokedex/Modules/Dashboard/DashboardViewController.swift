@@ -15,15 +15,13 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
     private var pokemonArray: [Pokemon] = [] //chamar metodo para popular no didLoad
-//    private var apiHelper: APIHelper = APIHelper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
+        getData()
         setupVisualStructure()
         setupCollectionView()
-//        apiHelper.getData()
-        getData()
     }
     
     //MARK: setup functions
@@ -62,14 +60,23 @@ extension DashboardViewController: UICollectionViewDelegate, UICollectionViewDat
         cell.bind(pokemon: pokemon)
         return cell
     }
+    
+}
 
+extension DashboardViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 92, height: 96)
+    }
+    
 }
 
 //MARK: API req's
 extension DashboardViewController {
     
     private func getData() {
-        for id in 1...5 {
+        
+        for id in 1...151 {
             let url = "https://pokeapi.co/api/v2/pokemon/\(id)"
             Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
                 .responseJSON { response in
@@ -79,14 +86,21 @@ extension DashboardViewController {
                                 do {
                                     guard let pokemon: Pokemon = try? JSONDecoder().decode(Pokemon.self, from: data) else { return }
                                     self.pokemonArray.append(pokemon)
-                                    self.collectionView.reloadData()
+                                    self.pokemonArray = self.pokemonArray.sorted{ $0.id < $1.id }
+//                                    self.collectionView.reloadData()
                                 }
                             }
                         case .failure:
                             break;
-                        }
+                    }
                 }
+                .response { _ in
+                    self.collectionView.reloadData()
+                }
+//            let indexPath: IndexPath = IndexPath(index: id)
+//            self.collectionView.reloadItems(at: [indexPath])
         }
+        
     }
-    
+
 }
