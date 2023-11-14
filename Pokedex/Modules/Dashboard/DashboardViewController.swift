@@ -14,7 +14,14 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
-    private var pokemonArray: [Pokemon] = [] //chamar metodo para popular no didLoad
+    @IBOutlet weak var filterModal: UIView!
+    @IBOutlet weak var viewFilterInsideModal: UIView!
+    @IBOutlet weak var numberOption: UIButton!
+    @IBOutlet weak var nameOption: UIButton!
+    
+    private var isFilterSelected: Bool = false
+    private var pokemonArrayDB: [Pokemon] = [] //chamar metodo para popular no didLoad
+    private var customizedPokemonArray: [Pokemon] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,26 +29,74 @@ class DashboardViewController: UIViewController {
         getData()
         setupVisualStructure()
         setupCollectionView()
+        setupSearchBar()
+        setupActionForOptionBtts()
     }
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        setupPokeArrayToDefault()
+//    }
     
     //MARK: setup functions
     private func setupVisualStructure() {
         filterButton.backgroundColor = UIColor.white
         filterButton.layer.cornerRadius = 16
+        filterModal.layer.cornerRadius = 12
+        viewFilterInsideModal.layer.cornerRadius = 8
+    }
+    
+    private func setupCollectionView() {
+        //visual
         collectionView.backgroundColor = UIColor.white
         collectionView.layer.cornerRadius = 16
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(UINib(nibName: "CollectionViewPokeCell", bundle: nil), forCellWithReuseIdentifier: "PokeCell")
+    }
+    
+    private func setupSearchBar() {
+        //visual
         searchBar.searchTextField.backgroundColor = UIColor.white
         searchBar.searchTextField.leftView?.tintColor = UIColor(named: "pokedex-red")
         searchBar.tintColor = UIColor.black
         searchBar.searchTextField.textColor = UIColor.black
+        
+        searchBar.delegate = self
     }
     
-    private func setupCollectionView() {
-        self.collectionView.delegate = self
-        self.collectionView.dataSource = self
-        self.collectionView.register(UINib(nibName: "CollectionViewPokeCell", bundle: nil), forCellWithReuseIdentifier: "PokeCell")
+    private func setupPokeArrayToDefault() {
+        customizedPokemonArray.removeAll()
+        customizedPokemonArray.append(contentsOf: pokemonArrayDB)
     }
-
+    
+    @IBAction func showFilterModal(_ sender: Any) {
+        UIView.animate(
+            withDuration: 0.3,
+            animations: self.filterModal.layoutIfNeeded,
+            completion: { _ in
+                self.filterModal.isHidden = (self.filterModal.isHidden) ? false : true
+            }
+        )
+    }
+    
+    private func setupActionForOptionBtts() {
+//        numberOption.addAction(optionSelected(), for: .touchUpInside)
+        numberOption.addTarget(self, action: #selector(optionSelected), for: .touchUpInside)
+        nameOption.addTarget(self, action: #selector(optionSelected), for: .touchUpInside)
+    }
+    
+    @objc private func optionSelected(btt: UIButton) {
+        guard let optionImage = btt.backgroundImage(for: .normal) else { return }
+        if optionImage == UIImage(named: "selectedBtt") {
+            btt.setBackgroundImage(UIImage(named: "unselectedBtt"), for: .normal)
+            isFilterSelected = false
+        } else if !isFilterSelected {
+            btt.setBackgroundImage(UIImage(named: "selectedBtt"), for: .normal)
+            isFilterSelected = true
+        }
+    }
+    
 }
 
 //https://www.youtube.com/watch?v=TQOhsyWUhwg
@@ -51,12 +106,12 @@ class DashboardViewController: UIViewController {
 extension DashboardViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return pokemonArray.count
+        return customizedPokemonArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PokeCell", for: indexPath) as! CollectionViewCellPokeCell
-        let pokemon = pokemonArray[indexPath.row]
+        let pokemon = customizedPokemonArray[indexPath.row]
         cell.bind(pokemon: pokemon)
         return cell
     }
@@ -85,9 +140,8 @@ extension DashboardViewController {
                             if let data = response.data {
                                 do {
                                     guard let pokemon: Pokemon = try? JSONDecoder().decode(Pokemon.self, from: data) else { return }
-                                    self.pokemonArray.append(pokemon)
-                                    self.pokemonArray = self.pokemonArray.sorted{ $0.id < $1.id }
-//                                    self.collectionView.reloadData()
+                                    self.pokemonArrayDB.append(pokemon)
+                                    self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
                                 }
                             }
                         case .failure:
@@ -96,11 +150,27 @@ extension DashboardViewController {
                 }
                 .response { _ in
                     self.collectionView.reloadData()
+                    self.setupPokeArrayToDefault()
                 }
-//            let indexPath: IndexPath = IndexPath(index: id)
-//            self.collectionView.reloadItems(at: [indexPath])
         }
         
     }
 
+}
+
+extension DashboardViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        setupPokeArrayToDefault()
+        
+        if !searchText.isEmpty {
+            customizedPokemonArray = customizedPokemonArray.filter {
+                (($0.name.lowercased().contains(searchText.lowercased())) ||
+                    ($0.id.description.contains(searchText)))
+            }
+        }
+        collectionView.reloadData()
+    }
+    
 }
