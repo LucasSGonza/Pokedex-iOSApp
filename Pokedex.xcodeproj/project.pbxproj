@@ -12,6 +12,7 @@
 		64FA5A363B7D92344D22D497 /* Pods_Pokedex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB6F1C280B5A181E4E3B2FF0 /* Pods_Pokedex.framework */; };
 		D90C79512AE2F04C00047950 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D90C79502AE2F04C00047950 /* Color.xcassets */; };
 		D90C79592AE2F99D00047950 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D90C79582AE2F99D00047950 /* Dashboard.storyboard */; };
+		D90D27C62B067A1600E7F177 /* APIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90D27C52B067A1600E7F177 /* APIHelper.swift */; };
 		D94389B72AE2EB7A002B1D65 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94389B62AE2EB7A002B1D65 /* AppDelegate.swift */; };
 		D94389B92AE2EB7A002B1D65 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94389B82AE2EB7A002B1D65 /* SceneDelegate.swift */; };
 		D94389BB2AE2EB7A002B1D65 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94389BA2AE2EB7A002B1D65 /* DashboardViewController.swift */; };
@@ -51,6 +52,7 @@
 		CF2884C8C4DDAF45D0E6909E /* Pods-PokedexTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokedexTests.debug.xcconfig"; path = "Target Support Files/Pods-PokedexTests/Pods-PokedexTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D90C79502AE2F04C00047950 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		D90C79582AE2F99D00047950 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
+		D90D27C52B067A1600E7F177 /* APIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIHelper.swift; sourceTree = "<group>"; };
 		D94389B32AE2EB7A002B1D65 /* Pokedex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pokedex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D94389B62AE2EB7A002B1D65 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D94389B82AE2EB7A002B1D65 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -176,6 +178,14 @@
 			path = PokeDetailed;
 			sourceTree = "<group>";
 		};
+		D90D27C42B0679FF00E7F177 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				D90D27C52B067A1600E7F177 /* APIHelper.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
 		D94389AA2AE2EB7A002B1D65 = {
 			isa = PBXGroup;
 			children = (
@@ -232,6 +242,7 @@
 		D94889EA2AF174A7001C08C2 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				D90D27C42B0679FF00E7F177 /* API */,
 				D98102382AFACA6F00CEC618 /* UIImageView */,
 				D94889EB2AF174BB001C08C2 /* UICollectionViewCell */,
 			);
@@ -503,6 +514,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D90D27C62B067A1600E7F177 /* APIHelper.swift in Sources */,
 				D94389BB2AE2EB7A002B1D65 /* DashboardViewController.swift in Sources */,
 				D94389B72AE2EB7A002B1D65 /* AppDelegate.swift in Sources */,
 				D9488A002AF17A9F001C08C2 /* CollectionViewCellPokeCell.swift in Sources */,

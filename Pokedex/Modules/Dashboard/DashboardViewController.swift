@@ -22,11 +22,16 @@ class DashboardViewController: UIViewController {
     private var isFilterSelected: Bool = false
     private var pokemonArrayDB: [Pokemon] = [] //chamar metodo para popular no didLoad
     private var customizedPokemonArray: [Pokemon] = []
+    private var apiHelper = APIHelper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
-        getData()
+//        getData()
+        getDataFromAPI(completion: {
+            self.collectionView.reloadData()
+            self.setupCustomArrayToDefault()
+        })
         setupVisualStructure()
         setupCollectionView()
         setupSearchBar()
@@ -36,6 +41,15 @@ class DashboardViewController: UIViewController {
 //    override func viewDidAppear(_ animated: Bool) {
 //        setupPokeArrayToDefault()
 //    }
+    
+    private func getDataFromAPI(completion: @escaping () -> Void) {
+        apiHelper.getData(completion: { pokemon in
+            self.pokemonArrayDB.append(pokemon)
+            self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
+            print(pokemon.id)
+            completion()
+        })
+    }
     
     //MARK: setup functions
     private func setupVisualStructure() {
@@ -65,7 +79,7 @@ class DashboardViewController: UIViewController {
         searchBar.delegate = self
     }
     
-    private func setupPokeArrayToDefault() {
+    private func setupCustomArrayToDefault() {
         customizedPokemonArray.removeAll()
         customizedPokemonArray.append(contentsOf: pokemonArrayDB)
     }
@@ -129,32 +143,32 @@ extension DashboardViewController: UICollectionViewDelegateFlowLayout {
 //MARK: API req's
 extension DashboardViewController {
     
-    private func getData() {
-        
-        for id in 1...151 {
-            let url = "https://pokeapi.co/api/v2/pokemon/\(id)"
-            Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
-                .responseJSON { response in
-                    switch response.result {
-                        case .success:
-                            if let data = response.data {
-                                do {
-                                    guard let pokemon: Pokemon = try? JSONDecoder().decode(Pokemon.self, from: data) else { return }
-                                    self.pokemonArrayDB.append(pokemon)
-                                    self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
-                                }
-                            }
-                        case .failure:
-                            break;
-                    }
-                }
-                .response { _ in
-                    self.collectionView.reloadData()
-                    self.setupPokeArrayToDefault()
-                }
-        }
-        
-    }
+//    private func getData() {
+//
+//        for id in 1...151 {
+//            let url = "https://pokeapi.co/api/v2/pokemon/\(id)"
+//            Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
+//                .responseJSON { response in
+//                    switch response.result {
+//                        case .success:
+//                            if let data = response.data {
+//                                do {
+//                                    guard let pokemon: Pokemon = try? JSONDecoder().decode(Pokemon.self, from: data) else { return }
+//                                    self.pokemonArrayDB.append(pokemon)
+//                                    self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
+//                                }
+//                            }
+//                        case .failure:
+//                            break;
+//                    }
+//                }
+//                .response { _ in
+//                    self.collectionView.reloadData()
+//                    self.setupPokeArrayToDefault()
+//                }
+//        }
+//
+//    }
 
 }
 
@@ -162,7 +176,7 @@ extension DashboardViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        setupPokeArrayToDefault()
+        setupCustomArrayToDefault()
         
         if !searchText.isEmpty {
             customizedPokemonArray = customizedPokemonArray.filter {
