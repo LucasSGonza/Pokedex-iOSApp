@@ -33,7 +33,6 @@ class CollectionViewCellPokeCell: UICollectionViewCell {
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOpacity = 0.80
         self.layer.shadowOffset = CGSize(width: 0, height: 1)
-        
     }
     
     func bind(pokemon: Pokemon) {

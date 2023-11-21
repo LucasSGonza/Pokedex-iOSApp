@@ -22,7 +22,7 @@ class DashboardViewController: UIViewController {
     private var isFilterSelected: Bool = false
     private var pokemonArrayDB: [Pokemon] = [] //chamar metodo para popular no didLoad
     private var customizedPokemonArray: [Pokemon] = []
-    private var apiHelper = APIHelper()
+    private var apiRepository = APIRepository()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,10 +43,9 @@ class DashboardViewController: UIViewController {
 //    }
     
     private func getDataFromAPI(completion: @escaping () -> Void) {
-        apiHelper.getData(completion: { pokemon in
+        apiRepository.getData(completion: { pokemon in
             self.pokemonArrayDB.append(pokemon)
             self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
-            print(pokemon.id)
             completion()
         })
     }
@@ -130,12 +129,20 @@ extension DashboardViewController: UICollectionViewDelegate, UICollectionViewDat
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let pokeDetailedSB = UIStoryboard(name: "PokeDetailed", bundle: nil)
+        let pokeDetailedVC = pokeDetailedSB.instantiateViewController(withIdentifier: "PokeDetailed") as! PokeDetailedViewController
+        self.navigationController?.pushViewController(pokeDetailedVC, animated: true)
+    }
+    
 }
 
 extension DashboardViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 92, height: 96)
+        let newWidth = (collectionView.frame.width - 72) / 3.0
+        return CGSize(width: newWidth, height: 96)
+//        return CGSize(width: 92, height: 96)
     }
     
 }

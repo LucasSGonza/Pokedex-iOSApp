@@ -8,7 +8,7 @@
 import UIKit
 import Alamofire
 
-class APIHelper {
+class APIRepository {
     
 //    private var pokemonArrayDB: [Pokemon] = []
     
