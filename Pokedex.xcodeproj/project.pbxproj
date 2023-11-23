@@ -24,6 +24,7 @@
 		D94889F02AF174F2001C08C2 /* CollectionViewPokeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D94889EE2AF174F2001C08C2 /* CollectionViewPokeCell.xib */; };
 		D9488A002AF17A9F001C08C2 /* CollectionViewCellPokeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94889FF2AF17A9F001C08C2 /* CollectionViewCellPokeCell.swift */; };
 		D981023A2AFACA8B00CEC618 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98102392AFACA8B00CEC618 /* UIImageView.swift */; };
+		D99DFE9A2B0FDA4F000D20A5 /* HelperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99DFE992B0FDA4F000D20A5 /* HelperController.swift */; };
 		D9BEE37C2B0D1753007C3629 /* PokeDetailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BEE37B2B0D1753007C3629 /* PokeDetailedViewController.swift */; };
 		D9BEE3812B0D176F007C3629 /* PokeDetailed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9BEE3802B0D176F007C3629 /* PokeDetailed.storyboard */; };
 /* End PBXBuildFile section */
@@ -72,6 +73,7 @@
 		D94889EE2AF174F2001C08C2 /* CollectionViewPokeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewPokeCell.xib; sourceTree = "<group>"; };
 		D94889FF2AF17A9F001C08C2 /* CollectionViewCellPokeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCellPokeCell.swift; sourceTree = "<group>"; };
 		D98102392AFACA8B00CEC618 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
+		D99DFE992B0FDA4F000D20A5 /* HelperController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperController.swift; sourceTree = "<group>"; };
 		D9BEE37B2B0D1753007C3629 /* PokeDetailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeDetailedViewController.swift; sourceTree = "<group>"; };
 		D9BEE3802B0D176F007C3629 /* PokeDetailed.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PokeDetailed.storyboard; sourceTree = "<group>"; };
 		E57B65D0BF9EEE7331877DD9 /* Pods-PokedexTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokedexTests.release.xcconfig"; path = "Target Support Files/Pods-PokedexTests/Pods-PokedexTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 		D94889EA2AF174A7001C08C2 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				D99DFE982B0FDA41000D20A5 /* UIViewController */,
 				D90D27C42B0679FF00E7F177 /* API */,
 				D98102382AFACA6F00CEC618 /* UIImageView */,
 				D94889EB2AF174BB001C08C2 /* UICollectionViewCell */,
@@ -278,6 +281,14 @@
 				D98102392AFACA8B00CEC618 /* UIImageView.swift */,
 			);
 			path = UIImageView;
+			sourceTree = "<group>";
+		};
+		D99DFE982B0FDA41000D20A5 /* UIViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D99DFE992B0FDA4F000D20A5 /* HelperController.swift */,
+			);
+			path = UIViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -528,6 +539,7 @@
 				D9488A002AF17A9F001C08C2 /* CollectionViewCellPokeCell.swift in Sources */,
 				D94389B92AE2EB7A002B1D65 /* SceneDelegate.swift in Sources */,
 				D981023A2AFACA8B00CEC618 /* UIImageView.swift in Sources */,
+				D99DFE9A2B0FDA4F000D20A5 /* HelperController.swift in Sources */,
 				D94565532AF552A700E7B564 /* Pokemon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
