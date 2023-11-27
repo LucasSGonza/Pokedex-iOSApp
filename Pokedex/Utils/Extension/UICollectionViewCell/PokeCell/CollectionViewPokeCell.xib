@@ -39,10 +39,10 @@
                                 </constraints>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPokemon" translatesAutoresizingMaskIntoConstraints="NO" id="76K-bD-KHc">
-                                <rect key="frame" x="16" y="18" width="72" height="72"/>
+                                <rect key="frame" x="21" y="18" width="62" height="62"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="72" id="ZQM-my-mXS"/>
-                                    <constraint firstAttribute="height" constant="72" id="jFE-qK-XYc"/>
+                                    <constraint firstAttribute="width" constant="62" id="ZQM-my-mXS"/>
+                                    <constraint firstAttribute="height" constant="62" id="jFE-qK-XYc"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#999" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uKm-IO-RXa">
@@ -56,7 +56,7 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="rdB-eS-I9l" secondAttribute="trailing" id="DVh-dO-Mt5"/>
                             <constraint firstAttribute="bottom" secondItem="rdB-eS-I9l" secondAttribute="bottom" id="VMn-Hv-qxN"/>
-                            <constraint firstItem="76K-bD-KHc" firstAttribute="centerY" secondItem="arM-u5-6hY" secondAttribute="centerY" id="Xb8-Rc-XRA"/>
+                            <constraint firstItem="76K-bD-KHc" firstAttribute="centerY" secondItem="arM-u5-6hY" secondAttribute="centerY" constant="-5" id="Xb8-Rc-XRA"/>
                             <constraint firstItem="uKm-IO-RXa" firstAttribute="top" secondItem="arM-u5-6hY" secondAttribute="top" constant="4" id="beJ-02-2HW"/>
                             <constraint firstItem="76K-bD-KHc" firstAttribute="centerX" secondItem="arM-u5-6hY" secondAttribute="centerX" id="bgm-aL-7wl"/>
                             <constraint firstAttribute="trailing" secondItem="uKm-IO-RXa" secondAttribute="trailing" constant="8" id="kS0-Mn-7Rv"/>

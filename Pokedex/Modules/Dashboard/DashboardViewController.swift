@@ -132,8 +132,8 @@ extension DashboardViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let pokeDetailed = UIStoryboard(name: "PokeDetailed", bundle: nil).instantiateViewController(withIdentifier: "PokeDetailed") as! PokeDetailedViewController
         let pokemon = customizedPokemonArray[indexPath.row]
-        print(pokemon.name)
-        pokeDetailed.initView(pokemon: pokemon)
+        print("Clicou em: \(pokemon.name) (dashboard)")
+        pokeDetailed.initView(pokemonID: pokemon.id, pokemonArray: self.pokemonArrayDB)
         self.navigationController?.pushViewController(pokeDetailed, animated: true)
     }
     
