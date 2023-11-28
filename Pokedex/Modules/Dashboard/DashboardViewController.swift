@@ -27,7 +27,6 @@ class DashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
-//        getData()
         getDataFromAPI(completion: {
             self.collectionView.reloadData()
             self.setupCustomArrayToDefault()
@@ -37,10 +36,6 @@ class DashboardViewController: UIViewController {
         setupSearchBar()
         setupActionForOptionBtts()
     }
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        setupPokeArrayToDefault()
-//    }
     
     private func getDataFromAPI(completion: @escaping () -> Void) {
         apiRepository.getData(completion: { pokemon in

@@ -15,8 +15,11 @@ class Pokemon: Decodable {
     var weight: Double
     var height: Double
     var sprites: Sprites //photo
-    var types: [Item]
+    var types: [ItemType]
+    var abilities: [ItemAbility]
+    var stats: [Stats]
 
+    //Structs for sprites (pokemon photo)
     struct Sprites: Decodable {
         var other: Other
     }
@@ -40,13 +43,36 @@ class Pokemon: Decodable {
     struct OfficialArtwork: Decodable {
         var front_default: String
     }
+    //-----------
     
-    struct Item: Decodable {
+    //MARK: Structs for types
+    struct ItemType: Decodable {
         var type: PokeType
     }
     
     struct PokeType: Decodable {
         var name: String
     }
-
+    //-----------
+    
+    //MARK: Struct for abilities
+    struct ItemAbility: Decodable {
+        var ability: Ability
+    }
+    
+    struct Ability: Decodable {
+        var name: String
+    }
+    //-----------
+    
+    //MARK: Struct for stats
+    struct Stats: Decodable {
+        var base_stat: Int
+        var stat: Stat
+    }
+    struct Stat: Decodable {
+        var name: String
+    }
+    //-----------
+    
 }
