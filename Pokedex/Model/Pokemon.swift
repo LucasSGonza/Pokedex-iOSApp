@@ -18,6 +18,8 @@ class Pokemon: Decodable {
     var types: [ItemType]
     var abilities: [ItemAbility]
     var stats: [Stats]
+    var species: Species
+    var pokemonText: String?
 
     //Structs for sprites (pokemon photo)
     struct Sprites: Decodable {
@@ -75,4 +77,10 @@ class Pokemon: Decodable {
     }
     //-----------
     
+    //MARK: Struct for pokemon-species URL
+    //to get the URL for the pokemon speeches
+    struct Species: Decodable {
+        var url: String
+    }
+    //-----------
 }

@@ -22,6 +22,9 @@ class PokeDetailedViewController: HelperControler {
     
     @IBOutlet weak var secondType: UILabel!
     
+    @IBOutlet weak var aboutLabel: UILabel!
+    @IBOutlet weak var baseStatsLabel: UILabel!
+    
     @IBOutlet weak var weight: UILabel!
     @IBOutlet weak var height: UILabel!
     @IBOutlet weak var moves: UILabel!
@@ -39,7 +42,7 @@ class PokeDetailedViewController: HelperControler {
     //By default, the progress is 0.0 and the total is 1.0.
     @IBOutlet weak var progressHP: UIProgressView!
     @IBOutlet weak var progressATK: UIProgressView!
-    @IBOutlet weak var progresDEF: UIProgressView!
+    @IBOutlet weak var progressDEF: UIProgressView!
     @IBOutlet weak var progressSATK: UIProgressView!
     @IBOutlet weak var progressSDEF: UIProgressView!
     @IBOutlet weak var progressSPD: UIProgressView!
@@ -56,6 +59,29 @@ class PokeDetailedViewController: HelperControler {
     
     private var pokemonID: Int?
     private var pokemonArray: [Pokemon]?
+//    private var apiRepository = APIRepository()
+    
+    //https://blog.logrocket.com/swift-enums-an-overview-with-examples/
+//    enum BackgroundColors: String, CaseIterable {
+//        case bug = "bug"
+//        case dark = "dark"
+//        case dragon = "dragon"
+//        case electric = "electric"
+//        case fairy
+//        case fighting
+//        case fire
+//        case flying
+//        case ghost
+//        case normal
+//        case grass
+//        case ground
+//        case ice
+//        case poison
+//        case psychic
+//        case rock
+//        case steel
+//        case water
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,48 +95,63 @@ class PokeDetailedViewController: HelperControler {
     }
     
     private func setupPokeOnScreen() {
+//        getPokemonText()
         setupPokemonInfos()
         isFirstOrLastPokemon(pokemonID: self.pokemonID ?? 1)
     }
+    
+//    private func getPokemonText() {
+//        guard let pokemonArray = self.pokemonArray, let pokemon = pokemonArray.first(where: {$0.id == pokemonID}) else { return }
+//
+//        apiRepository.getTextFromASpecificPokemon(pokemon: pokemon, completion: {text in
+//            self.pokeText.text = text
+//        })
+//
+//    }
     
     //MARK: setup poke infos (works as a reloadData)
     private func setupPokemonInfos() {
         guard let pokemonArray = self.pokemonArray, let pokemon = pokemonArray.first(where: {$0.id == pokemonID}) else { return }
         
-        self.pokeNameLabel.text = pokemon.name
-        self.pokeIDLabel.text = setupVisualForId(id: pokemon.id)
-        self.pokeImage.load(urlString: pokemon.sprites.other.officialArtwork
+        pokeNameLabel.text = pokemon.name
+        pokeIDLabel.text = setupVisualForId(id: pokemon.id)
+        pokeImage.load(urlString: pokemon.sprites.other.officialArtwork
                                 .front_default)
-        self.height.text = (pokemon.height / 10).description + " m"
-        self.weight.text = (pokemon.weight / 10).description + " kg"
         
-        self.moves.text = ""
+        aboutLabel.textColor = UIColor(named: pokemon.types[0].type.name)
+        
+        height.text = (pokemon.height / 10).description + " m"
+        weight.text = (pokemon.weight / 10).description + " kg"
+        moves.text = ""
         pokemon.abilities.forEach { (a:Pokemon.ItemAbility) in
-            self.moves.text = self.moves.text! + "\n" + a.ability.name
+            moves.text = self.moves.text! + "\n" + a.ability.name
         }
         
-        self.pokeHP.text = self.setupVisualForStats(stat: pokemon.stats[0].base_stat)
-//        self.progressHP.progress = ()
+        baseStatsLabel.textColor = UIColor(named: pokemon.types[0].type.name)
+        print(pokemon.pokemonText ?? "nada")
+        pokeText.text = pokemon.pokemonText
         
-        self.pokeATK.text = self.setupVisualForStats(stat: pokemon.stats[1].base_stat)
-        self.pokeDEF.text = self.setupVisualForStats(stat: pokemon.stats[2].base_stat)
-        self.pokeSATK.text = self.setupVisualForStats(stat: pokemon.stats[3].base_stat)
-        self.pokeSDEF.text = self.setupVisualForStats(stat: pokemon.stats[4].base_stat)
-        self.pokeSPD.text = self.setupVisualForStats(stat: pokemon.stats[5].base_stat)
+        pokeHP.text = self.setupVisualForStats(stat: pokemon.stats[0].base_stat)
+        pokeATK.text = self.setupVisualForStats(stat: pokemon.stats[1].base_stat)
+        pokeDEF.text = self.setupVisualForStats(stat: pokemon.stats[2].base_stat)
+        pokeSATK.text = self.setupVisualForStats(stat: pokemon.stats[3].base_stat)
+        pokeSDEF.text = self.setupVisualForStats(stat: pokemon.stats[4].base_stat)
+        pokeSPD.text = self.setupVisualForStats(stat: pokemon.stats[5].base_stat)
         
         isFirstOrLastPokemon(pokemonID: pokemon.id)
         setupVisualBasedOnPokemonType(pokemon: pokemon)
+        setupProgressView()
     }
     
     private func setupVisualBasedOnPokemonType(pokemon: Pokemon) {
         //first type == always have
         self.firstType.text = pokemon.types[0].type.name
-        self.firstType.layer.cornerRadius = 10
+        self.firstType.layer.cornerRadius = 9
         self.firstType.layer.masksToBounds = true
         self.firstType.textColor = UIColor.white
         self.firstType.backgroundColor = UIColor(named: "\(pokemon.types[0].type.name)")
         
-        self.secondType.layer.cornerRadius = 10
+        self.secondType.layer.cornerRadius = 9
         self.secondType.layer.masksToBounds = true
         self.secondType.textColor = UIColor.white
         
@@ -130,6 +171,7 @@ class PokeDetailedViewController: HelperControler {
     
     //MARK: Change background color
     private func setupScreenVisual(pokemon: Pokemon) {
+        self.view.backgroundColor = UIColor(named: pokemon.types[0].type.name)
         bodyView.setupBackgroundColorBasedOnType(pokemonType: pokemon.types[0].type.name)
         titleView.setupBackgroundColorBasedOnType(pokemonType: pokemon.types[0].type.name)
         contentView.setupBackgroundColorBasedOnType(pokemonType: pokemon.types[0].type.name)
@@ -172,5 +214,36 @@ class PokeDetailedViewController: HelperControler {
         }
         
     }
+    
+}
+
+//https://www.digitalocean.com/community/tutorials/ios-progress-bar-progress-view
+//MARK: SetupProgressView
+extension PokeDetailedViewController {
+    
+    //pegar o valor do status e comparar para saber o progresso. => 100% = 999 ou 1.0
+    private func setupProgressView() {
+        guard let pokemon = self.pokemonArray?.first(where: {$0.id == pokemonID}) else { return }
+        
+        //visual da barra
+        progressHP.progressTintColor = UIColor(named: pokemon.types[0].type.name)
+        progressDEF.progressTintColor = UIColor(named: pokemon.types[0].type.name)
+        progressATK.progressTintColor = UIColor(named: pokemon.types[0].type.name)
+        progressSATK.progressTintColor = UIColor(named: pokemon.types[0].type.name)
+        progressSDEF.progressTintColor = UIColor(named: pokemon.types[0].type.name)
+        progressSPD.progressTintColor = UIColor(named: pokemon.types[0].type.name)
+        
+        //definir a "porcentagem" do progresso (pega o valor e / maximo)
+        progressHP.progress = Float(pokemon.stats[0].base_stat) / 233
+        progressATK.progress = Float(pokemon.stats[1].base_stat) / 233
+        progressDEF.progress = Float(pokemon.stats[2].base_stat) / 233
+        progressSATK.progress = Float(pokemon.stats[3].base_stat) / 233
+        progressSDEF.progress = Float(pokemon.stats[4].base_stat) / 233
+        progressSPD.progress = Float(pokemon.stats[5].base_stat) / 233
+    }
+    
+//    private func calculateProgress(statValue: Int) -> Float {
+//        return (Float(statValue) / 1000)
+//    }
     
 }

@@ -24,21 +24,46 @@ class DashboardViewController: UIViewController {
     private var customizedPokemonArray: [Pokemon] = []
     private var apiRepository = APIRepository()
     
+    private var flag: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
+        
         getDataFromAPI(completion: {
             self.collectionView.reloadData()
             self.setupCustomArrayToDefault()
         })
+        
         setupVisualStructure()
         setupCollectionView()
         setupSearchBar()
         setupActionForOptionBtts()
     }
     
+    private func loadingScreen(flag: Bool) {
+        let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
+
+        alert.view.tintColor = UIColor.black
+        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(x:10, y:5, width: 50, height:50)) as UIActivityIndicatorView
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.style = UIActivityIndicatorView.Style.medium
+        loadingIndicator.startAnimating();
+
+        alert.view.addSubview(loadingIndicator)
+        present(alert, animated: true, completion: nil)
+        
+        if flag {
+            dismiss(animated: true, completion: nil)
+        }
+
+    }
+    
     private func getDataFromAPI(completion: @escaping () -> Void) {
         apiRepository.getData(completion: { pokemon in
+            self.apiRepository.getTextFromASpecificPokemon(pokemon: pokemon, completion: { text in
+                pokemon.pokemonText = text.replacingOccurrences(of: "\n", with: " ")
+            })
             self.pokemonArrayDB.append(pokemon)
             self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
             completion()
@@ -142,38 +167,6 @@ extension DashboardViewController: UICollectionViewDelegateFlowLayout {
 //        return CGSize(width: 92, height: 96)
     }
     
-}
-
-//MARK: API req's
-extension DashboardViewController {
-    
-//    private func getData() {
-//
-//        for id in 1...151 {
-//            let url = "https://pokeapi.co/api/v2/pokemon/\(id)"
-//            Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
-//                .responseJSON { response in
-//                    switch response.result {
-//                        case .success:
-//                            if let data = response.data {
-//                                do {
-//                                    guard let pokemon: Pokemon = try? JSONDecoder().decode(Pokemon.self, from: data) else { return }
-//                                    self.pokemonArrayDB.append(pokemon)
-//                                    self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
-//                                }
-//                            }
-//                        case .failure:
-//                            break;
-//                    }
-//                }
-//                .response { _ in
-//                    self.collectionView.reloadData()
-//                    self.setupPokeArrayToDefault()
-//                }
-//        }
-//
-//    }
-
 }
 
 extension DashboardViewController: UISearchBarDelegate {
