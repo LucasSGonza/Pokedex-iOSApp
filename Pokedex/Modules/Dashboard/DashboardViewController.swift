@@ -8,9 +8,9 @@
 import UIKit
 import Alamofire
 
-class DashboardViewController: UIViewController {
+class DashboardViewController: HelperControler {
     
-    //MARK: Initial
+    //MARK: Main itens of the screen
     @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -19,63 +19,68 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var numberOption: UIButton!
     @IBOutlet weak var nameOption: UIButton!
     
+    //booleans for the modal interaction
     private var isFilterSelected: Bool = false
-    private var pokemonArrayDB: [Pokemon] = [] //chamar metodo para popular no didLoad
+    
+    //attributes used in the project
+    private var pokemonArrayDB: [Pokemon] = []
     private var customizedPokemonArray: [Pokemon] = []
     private var apiRepository = APIRepository()
-    
-    private var flag: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
+        startAllSetupFunctions()
         
-        getDataFromAPI(completion: {
-            self.collectionView.reloadData()
-            self.setupCustomArrayToDefault()
-        })
-        
-        setupVisualStructure()
-        setupCollectionView()
-        setupSearchBar()
-        setupActionForOptionBtts()
-    }
-    
-    private func loadingScreen(flag: Bool) {
-        let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
-
-        alert.view.tintColor = UIColor.black
-        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(x:10, y:5, width: 50, height:50)) as UIActivityIndicatorView
-        loadingIndicator.hidesWhenStopped = true
-        loadingIndicator.style = UIActivityIndicatorView.Style.medium
-        loadingIndicator.startAnimating();
-
-        alert.view.addSubview(loadingIndicator)
-        present(alert, animated: true, completion: nil)
-        
-        if flag {
-            dismiss(animated: true, completion: nil)
+        getDataFromAPI { pokeID in
+            if pokeID == 151 {
+                self.collectionView.reloadData()
+                self.setupCustomArrayToDefault()
+                self.dismissLoadinAlert(flag: true)
+            }
         }
 
     }
     
-    private func getDataFromAPI(completion: @escaping () -> Void) {
-        apiRepository.getData(completion: { pokemon in
+    //MARK: Main function to get data from the PokeAPI
+    private func getDataFromAPI(completion: @escaping (Int) -> Void) {
+        showLoadingAlert()
+        
+        apiRepository.getData(
+            completion: { pokemon in
             self.apiRepository.getTextFromASpecificPokemon(pokemon: pokemon, completion: { text in
                 pokemon.pokemonText = text.replacingOccurrences(of: "\n", with: " ")
             })
             self.pokemonArrayDB.append(pokemon)
             self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
-            completion()
+            print(self.pokemonArrayDB.count)
+            completion(self.pokemonArrayDB.count)
+        }, completionError: { flag in
+            if !flag {
+                self.dismissLoadinAlert(flag: !flag)
+            }
         })
     }
     
-    //MARK: setup functions
+    //MARK: my setup functions
+    private func startAllSetupFunctions() {
+        setupVisualStructure()
+        setupCollectionView()
+        setupSearchBar()
+        setupActionForOptionBtts()
+//        showLoadingAlert()
+    }
+    
     private func setupVisualStructure() {
         filterButton.backgroundColor = UIColor.white
         filterButton.layer.cornerRadius = 16
         filterModal.layer.cornerRadius = 12
         viewFilterInsideModal.layer.cornerRadius = 8
+        
+//        collectionView.layer.shadowRadius = 2
+//        collectionView.layer.shadowColor = UIColor.black.cgColor
+//        collectionView.layer.shadowOpacity = 0.80
+//        collectionView.layer.shadowOffset = CGSize(width: 0, height: 1)
     }
     
     private func setupCollectionView() {
@@ -103,6 +108,7 @@ class DashboardViewController: UIViewController {
         customizedPokemonArray.append(contentsOf: pokemonArrayDB)
     }
     
+    //MARK: filter Modal
     @IBAction func showFilterModal(_ sender: Any) {
         UIView.animate(
             withDuration: 0.3,
@@ -164,11 +170,11 @@ extension DashboardViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let newWidth = (collectionView.frame.width - 72) / 3.0
         return CGSize(width: newWidth, height: 96)
-//        return CGSize(width: 92, height: 96)
     }
     
 }
 
+//MARK: SearchBar
 extension DashboardViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

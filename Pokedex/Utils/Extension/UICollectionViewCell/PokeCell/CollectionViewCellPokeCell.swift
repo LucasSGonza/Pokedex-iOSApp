@@ -40,7 +40,6 @@ class CollectionViewCellPokeCell: UICollectionViewCell {
         self.name.text = pokemon.name
         self.id.text = setupVisualForId(id: pokemon.id)
         self.photo.load(urlString: pokemon.sprites.other.officialArtwork.front_default)
-//        self.photo.load(urlString: pokemon.sprites.front_default)
     }
     
     func setupVisualForId (id: Int) -> String {

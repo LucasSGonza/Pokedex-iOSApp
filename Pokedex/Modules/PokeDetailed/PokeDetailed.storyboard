@@ -144,7 +144,7 @@
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KGu-ZT-edc" userLabel="Moves">
                                                                         <rect key="frame" x="244" y="0.0" width="114" height="70"/>
                                                                         <subviews>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chlorophyll Overgrow" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J0r-Sl-X3Y">
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chlorophyll Overgrow" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J0r-Sl-X3Y">
                                                                                 <rect key="frame" x="10" y="12" width="99" height="24"/>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                                                 <color key="textColor" name="dark"/>
@@ -193,7 +193,7 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="70" id="iLg-98-SVc"/>
                                                                 </constraints>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                                 <color key="textColor" name="dark"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
@@ -476,11 +476,11 @@
                         <outlet property="bodyView" destination="PGF-5w-QqW" id="egg-Gm-nyi"/>
                         <outlet property="cardView" destination="nnY-kr-TfX" id="mEH-u9-jzB"/>
                         <outlet property="contentView" destination="mDq-Xy-GSV" id="IQc-EX-FBC"/>
-                        <outlet property="firstType" destination="4US-VS-lPc" id="cZb-A8-dki"/>
                         <outlet property="firstTypeAlignConstraint" destination="VGa-hO-t00" id="GTP-qM-ACa"/>
-                        <outlet property="height" destination="mBW-RR-IWk" id="eRa-46-rtZ"/>
+                        <outlet property="firstTypeLabel" destination="4US-VS-lPc" id="cZb-A8-dki"/>
+                        <outlet property="heightLabel" destination="mBW-RR-IWk" id="eRa-46-rtZ"/>
                         <outlet property="leftArrow" destination="NWm-jS-La6" id="cQf-9J-hnZ"/>
-                        <outlet property="moves" destination="J0r-Sl-X3Y" id="MpX-XY-BW2"/>
+                        <outlet property="movesLabel" destination="J0r-Sl-X3Y" id="MpX-XY-BW2"/>
                         <outlet property="pokeATK" destination="FCJ-vd-umJ" id="GdH-ij-oOk"/>
                         <outlet property="pokeDEF" destination="sVC-SF-p0L" id="wg8-Pi-w6O"/>
                         <outlet property="pokeHP" destination="NWe-BA-1xy" id="Gxr-rW-4gD"/>
@@ -490,7 +490,7 @@
                         <outlet property="pokeSATK" destination="zNU-iL-yKh" id="ZcV-ai-AZb"/>
                         <outlet property="pokeSDEF" destination="DS0-0P-VhH" id="ooW-CN-fg3"/>
                         <outlet property="pokeSPD" destination="CDK-oZ-7WL" id="9qR-zM-hel"/>
-                        <outlet property="pokeText" destination="4DQ-Mz-VIB" id="FQy-jp-nsL"/>
+                        <outlet property="pokeTextLabel" destination="4DQ-Mz-VIB" id="FQy-jp-nsL"/>
                         <outlet property="progressATK" destination="e9g-wM-Tka" id="faK-nC-omr"/>
                         <outlet property="progressDEF" destination="iYE-of-ikr" id="x6o-dE-GwS"/>
                         <outlet property="progressHP" destination="1hY-IT-ymj" id="84e-fr-g78"/>
@@ -498,9 +498,9 @@
                         <outlet property="progressSDEF" destination="YEx-jQ-3Ec" id="jjz-Jf-hqp"/>
                         <outlet property="progressSPD" destination="AGA-cs-Azx" id="GmV-cI-cVd"/>
                         <outlet property="rightArrow" destination="p8Y-AY-tS3" id="Icm-Qx-xaV"/>
-                        <outlet property="secondType" destination="qqw-Yu-cuT" id="V8N-tx-M0o"/>
+                        <outlet property="secondTypeLabel" destination="qqw-Yu-cuT" id="V8N-tx-M0o"/>
                         <outlet property="titleView" destination="0w3-xd-4yc" id="Thn-vT-bSV"/>
-                        <outlet property="weight" destination="kRm-BB-39A" id="c1a-7a-s1Z"/>
+                        <outlet property="weightLabel" destination="kRm-BB-39A" id="c1a-7a-s1Z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F1x-MM-WZF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

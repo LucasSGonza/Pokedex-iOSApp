@@ -9,7 +9,7 @@ import UIKit
 
 class PokeDetailedViewController: HelperControler {
     
-    //MARK: Atributes and elements
+    //MARK: Attributes and elements
     
     //main infos
     @IBOutlet weak var pokeNameLabel: UILabel!
@@ -17,20 +17,20 @@ class PokeDetailedViewController: HelperControler {
     @IBOutlet weak var pokeImage: UIImageView!
     
     //first infos
-    @IBOutlet weak var firstType: UILabel!
+    @IBOutlet weak var firstTypeLabel: UILabel!
     @IBOutlet weak var firstTypeAlignConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var secondType: UILabel!
+    @IBOutlet weak var secondTypeLabel: UILabel!
     
     @IBOutlet weak var aboutLabel: UILabel!
     @IBOutlet weak var baseStatsLabel: UILabel!
     
-    @IBOutlet weak var weight: UILabel!
-    @IBOutlet weak var height: UILabel!
-    @IBOutlet weak var moves: UILabel!
-    @IBOutlet weak var pokeText: UILabel!
+    @IBOutlet weak var weightLabel: UILabel!
+    @IBOutlet weak var heightLabel: UILabel!
+    @IBOutlet weak var movesLabel: UILabel!
+    @IBOutlet weak var pokeTextLabel: UILabel!
     
-    //card infos
+    //label infos for the pokemon stats
     @IBOutlet weak var pokeHP: UILabel!
     @IBOutlet weak var pokeATK: UILabel!
     @IBOutlet weak var pokeDEF: UILabel!
@@ -38,8 +38,7 @@ class PokeDetailedViewController: HelperControler {
     @IBOutlet weak var pokeSDEF: UILabel!
     @IBOutlet weak var pokeSPD: UILabel!
     
-    //progress infos for the card infos
-    //By default, the progress is 0.0 and the total is 1.0.
+    //progress infos about the pokemon, based in his stats
     @IBOutlet weak var progressHP: UIProgressView!
     @IBOutlet weak var progressATK: UIProgressView!
     @IBOutlet weak var progressDEF: UIProgressView!
@@ -85,7 +84,7 @@ class PokeDetailedViewController: HelperControler {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupPokeOnScreen()
+        setupPokemonInfos()
     }
     
     //MARK: Init View
@@ -94,23 +93,9 @@ class PokeDetailedViewController: HelperControler {
         self.pokemonArray = pokemonArray
     }
     
-    private func setupPokeOnScreen() {
-//        getPokemonText()
-        setupPokemonInfos()
-        isFirstOrLastPokemon(pokemonID: self.pokemonID ?? 1)
-    }
-    
-//    private func getPokemonText() {
-//        guard let pokemonArray = self.pokemonArray, let pokemon = pokemonArray.first(where: {$0.id == pokemonID}) else { return }
-//
-//        apiRepository.getTextFromASpecificPokemon(pokemon: pokemon, completion: {text in
-//            self.pokeText.text = text
-//        })
-//
-//    }
-    
     //MARK: setup poke infos (works as a reloadData)
     private func setupPokemonInfos() {
+        //sempre criará um novo pokemon, baseado no ID atual
         guard let pokemonArray = self.pokemonArray, let pokemon = pokemonArray.first(where: {$0.id == pokemonID}) else { return }
         
         pokeNameLabel.text = pokemon.name
@@ -120,16 +105,17 @@ class PokeDetailedViewController: HelperControler {
         
         aboutLabel.textColor = UIColor(named: pokemon.types[0].type.name)
         
-        height.text = (pokemon.height / 10).description + " m"
-        weight.text = (pokemon.weight / 10).description + " kg"
-        moves.text = ""
+        heightLabel.text = (pokemon.height / 10).description + " m"
+        weightLabel.text = (pokemon.weight / 10).description + " kg"
+        
+        movesLabel.text = ""
         pokemon.abilities.forEach { (a:Pokemon.ItemAbility) in
-            moves.text = self.moves.text! + "\n" + a.ability.name
+            movesLabel.text = self.movesLabel.text! + "\n" + a.ability.name
         }
         
         baseStatsLabel.textColor = UIColor(named: pokemon.types[0].type.name)
-        print(pokemon.pokemonText ?? "nada")
-        pokeText.text = pokemon.pokemonText
+//        print(pokemon.pokemonText ?? "nada")
+        pokeTextLabel.text = pokemon.pokemonText
         
         pokeHP.text = self.setupVisualForStats(stat: pokemon.stats[0].base_stat)
         pokeATK.text = self.setupVisualForStats(stat: pokemon.stats[1].base_stat)
@@ -143,33 +129,34 @@ class PokeDetailedViewController: HelperControler {
         setupProgressView()
     }
     
+    //MARK: setup general visual of the itens on screen
     private func setupVisualBasedOnPokemonType(pokemon: Pokemon) {
         //first type == always have
-        self.firstType.text = pokemon.types[0].type.name
-        self.firstType.layer.cornerRadius = 9
-        self.firstType.layer.masksToBounds = true
-        self.firstType.textColor = UIColor.white
-        self.firstType.backgroundColor = UIColor(named: "\(pokemon.types[0].type.name)")
+        self.firstTypeLabel.text = pokemon.types[0].type.name
+        self.firstTypeLabel.layer.cornerRadius = 9
+        self.firstTypeLabel.layer.masksToBounds = true
+        self.firstTypeLabel.textColor = UIColor.white
+        self.firstTypeLabel.backgroundColor = UIColor(named: "\(pokemon.types[0].type.name)")
         
-        self.secondType.layer.cornerRadius = 9
-        self.secondType.layer.masksToBounds = true
-        self.secondType.textColor = UIColor.white
+        self.secondTypeLabel.layer.cornerRadius = 9
+        self.secondTypeLabel.layer.masksToBounds = true
+        self.secondTypeLabel.textColor = UIColor.white
         
         self.firstTypeAlignConstraint.constant = 0
-        self.secondType.isHidden = true
+        self.secondTypeLabel.isHidden = true
         
         //if has secondType, apply the same things
         if pokemon.types.count > 1 {
-            self.secondType.text = pokemon.types[1].type.name
+            self.secondTypeLabel.text = pokemon.types[1].type.name
             self.firstTypeAlignConstraint.constant = -40
-            self.secondType.isHidden = false
-            self.secondType.backgroundColor = UIColor(named: "\(pokemon.types[1].type.name)")
+            self.secondTypeLabel.isHidden = false
+            self.secondTypeLabel.backgroundColor = UIColor(named: "\(pokemon.types[1].type.name)")
         }
         
         setupScreenVisual(pokemon: pokemon)
     }
     
-    //MARK: Change background color
+    //MARK: Change background visual color, based in the pokemon first type
     private func setupScreenVisual(pokemon: Pokemon) {
         self.view.backgroundColor = UIColor(named: pokemon.types[0].type.name)
         bodyView.setupBackgroundColorBasedOnType(pokemonType: pokemon.types[0].type.name)
@@ -183,45 +170,33 @@ class PokeDetailedViewController: HelperControler {
         self.navigationController?.popViewController(animated: true)
     }
     
+    //MARK: func's to move between pokemons
     @IBAction func moveBackward(_ sender: Any) {
         guard let pokemonID = self.pokemonID else { return }
         self.pokemonID = pokemonID - 1
-        print(self.pokemonID ?? 1)
         setupPokemonInfos()
     }
     
     @IBAction func moveForward(_ sender: Any) {
         guard let pokemonID = self.pokemonID else { return }
         self.pokemonID = pokemonID + 1
-        print(self.pokemonID ?? 1)
         setupPokemonInfos()
     }
     
     
-    //MARK: Moving between poke's
+    //MARK: func to hide or not the arrow's to change between pokemons
     private func isFirstOrLastPokemon(pokemonID: Int) {
-        
-        if pokemonID == 1 {
-            leftArrow.isHidden = true
-        } else {
-            leftArrow.isHidden = false
-        }
-        
-        if pokemonID == 151 {
-            rightArrow.isHidden = true
-        } else {
-            rightArrow.isHidden = false
-        }
-        
+        leftArrow.isHidden = (pokemonID == 1 ? true : false)
+        rightArrow.isHidden = (pokemonID == 151 ? true : false)
     }
     
 }
 
 //https://www.digitalocean.com/community/tutorials/ios-progress-bar-progress-view
-//MARK: SetupProgressView
+//MARK: setup ProgressView
 extension PokeDetailedViewController {
     
-    //pegar o valor do status e comparar para saber o progresso. => 100% = 999 ou 1.0
+    //pegar o valor do status e comparar para saber o progresso
     private func setupProgressView() {
         guard let pokemon = self.pokemonArray?.first(where: {$0.id == pokemonID}) else { return }
         
