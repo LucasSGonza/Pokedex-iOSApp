@@ -11,10 +11,11 @@ import Alamofire
 class APIRepository: HelperControler {
 
     //https://www.logilax.com/swift-escaping-closure/#:~:text=In%20Swift%2C%20a%20closure%20marked,the%20surrounding%20function%20is%20gone”.
-    func getData(completion: @escaping (Pokemon) -> Void, completionError: @escaping (Bool) -> Void) {
+    func getData(completion: @escaping (Pokemon?, Bool, Int?) -> Void) {
         
         for id in 1...151 {
-            let url = "https://pokeapi.co/api/v2/pokemon/\(id)"
+//            let url = "https://pokeapi.co/api/v2/pokemon/\(id)"
+            let url = "https://pokeapi.co/api/v2/pokemon/q"
             Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
                 .responseJSON { response in
                     switch response.result {
@@ -22,12 +23,12 @@ class APIRepository: HelperControler {
                             if let data = response.data {
                                 do {
                                     guard let pokemon: Pokemon = try? JSONDecoder().decode(Pokemon.self, from: data) else { return }
-                                    completion(pokemon)
+                                    completion(pokemon, true, id)
                                 }
                             }
                             break;
                         case .failure:
-                            completionError(false)
+                            completion(nil,false,id)
                             break;
                     }
                 }

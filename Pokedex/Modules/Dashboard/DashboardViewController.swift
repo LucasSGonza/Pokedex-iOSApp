@@ -32,32 +32,38 @@ class DashboardViewController: HelperControler {
         self.navigationController?.isNavigationBarHidden = true
         startAllSetupFunctions()
         
-        getDataFromAPI { pokeID in
-            if pokeID == 151 {
-                self.collectionView.reloadData()
-                self.setupCustomArrayToDefault()
-                self.dismissLoadinAlert(flag: true)
+        getDataFromAPI { (numReqs, flag) in
+            if numReqs == 151 {
+                if flag {
+                    self.collectionView.reloadData()
+                    self.setupCustomArrayToDefault()
+                    self.dismissLoadinAlert(flag: true)
+                } else {
+                    self.dismissLoadinAlert(flag: true)
+                }
             }
         }
 
     }
     
     //MARK: Main function to get data from the PokeAPI
-    private func getDataFromAPI(completion: @escaping (Int) -> Void) {
+    private func getDataFromAPI(completion: @escaping (Int, Bool) -> Void) {
         showLoadingAlert()
         
         apiRepository.getData(
-            completion: { pokemon in
-            self.apiRepository.getTextFromASpecificPokemon(pokemon: pokemon, completion: { text in
-                pokemon.pokemonText = text.replacingOccurrences(of: "\n", with: " ")
-            })
-            self.pokemonArrayDB.append(pokemon)
-            self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
-            print(self.pokemonArrayDB.count)
-            completion(self.pokemonArrayDB.count)
-        }, completionError: { flag in
-            if !flag {
-                self.dismissLoadinAlert(flag: !flag)
+            completion: { (pokemon, flag, numReqs) in
+            guard let numReqs = numReqs else { return }
+            if let pokemon = pokemon {
+                self.apiRepository.getTextFromASpecificPokemon(pokemon: pokemon, completion: { text in
+                    pokemon.pokemonText = text.replacingOccurrences(of: "\n", with: " ")
+                })
+                self.pokemonArrayDB.append(pokemon)
+                self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
+    //            print(self.pokemonArrayDB.count)
+    //            completion(self.pokemonArrayDB.count, flag)
+                completion(numReqs, flag)
+            } else {
+                completion(numReqs, flag)
             }
         })
     }
