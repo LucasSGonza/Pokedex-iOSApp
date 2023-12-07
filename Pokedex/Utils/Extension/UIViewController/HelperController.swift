@@ -11,7 +11,6 @@ import UIKit
 class HelperControler: UIViewController {
     
     var alertForLoading = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
-    
     var alertForError: UIAlertController = UIAlertController(title: nil, message: "Failed to load data from API", preferredStyle: .alert)
     
     //MARK: loading screen
@@ -68,6 +67,10 @@ class HelperControler: UIViewController {
         default:
             return ""
         }
+    }
+    
+    func setupBackgroundcolorBasedOnPokeType (pokemonType: String) -> UIColor {
+        return UIColor(named: pokemonType) ?? UIColor(named: "defaultBackground") ?? UIColor.gray
     }
     
 }

@@ -18,8 +18,8 @@ class PokeDetailedViewController: HelperControler {
     
     //first infos
     @IBOutlet weak var firstTypeLabel: UILabel!
-    @IBOutlet weak var firstTypeAlignConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var secondTypeView: UIView!
     @IBOutlet weak var secondTypeLabel: UILabel!
     
     @IBOutlet weak var aboutLabel: UILabel!
@@ -58,7 +58,6 @@ class PokeDetailedViewController: HelperControler {
     
     private var pokemonID: Int?
     private var pokemonArray: [Pokemon]?
-//    private var apiRepository = APIRepository()
     
     //https://blog.logrocket.com/swift-enums-an-overview-with-examples/
 //    enum BackgroundColors: String, CaseIterable {
@@ -100,8 +99,7 @@ class PokeDetailedViewController: HelperControler {
         
         pokeNameLabel.text = pokemon.name
         pokeIDLabel.text = setupVisualForId(id: pokemon.id)
-        pokeImage.load(urlString: pokemon.sprites.other.officialArtwork
-                                .front_default)
+        pokeImage.load(urlString: pokemon.sprites.other.officialArtwork.front_default)
         
         aboutLabel.textColor = UIColor(named: pokemon.types[0].type.name)
         
@@ -114,7 +112,6 @@ class PokeDetailedViewController: HelperControler {
         }
         
         baseStatsLabel.textColor = UIColor(named: pokemon.types[0].type.name)
-//        print(pokemon.pokemonText ?? "nada")
         pokeTextLabel.text = pokemon.pokemonText
         
         pokeHP.text = self.setupVisualForStats(stat: pokemon.stats[0].base_stat)
@@ -142,14 +139,12 @@ class PokeDetailedViewController: HelperControler {
         self.secondTypeLabel.layer.masksToBounds = true
         self.secondTypeLabel.textColor = UIColor.white
         
-        self.firstTypeAlignConstraint.constant = 0
-        self.secondTypeLabel.isHidden = true
+        secondTypeView.isHidden = true
         
         //if has secondType, apply the same things
         if pokemon.types.count > 1 {
             self.secondTypeLabel.text = pokemon.types[1].type.name
-            self.firstTypeAlignConstraint.constant = -40
-            self.secondTypeLabel.isHidden = false
+            secondTypeView.isHidden = false
             self.secondTypeLabel.backgroundColor = UIColor(named: "\(pokemon.types[1].type.name)")
         }
         
@@ -158,11 +153,18 @@ class PokeDetailedViewController: HelperControler {
     
     //MARK: Change background visual color, based in the pokemon first type
     private func setupScreenVisual(pokemon: Pokemon) {
-        self.view.backgroundColor = UIColor(named: pokemon.types[0].type.name)
-        bodyView.setupBackgroundColorBasedOnType(pokemonType: pokemon.types[0].type.name)
-        titleView.setupBackgroundColorBasedOnType(pokemonType: pokemon.types[0].type.name)
-        contentView.setupBackgroundColorBasedOnType(pokemonType: pokemon.types[0].type.name)
+        self.view.backgroundColor = setupBackgroundcolorBasedOnPokeType(pokemonType: pokemon.types[0].type.name)
+        bodyView.backgroundColor = setupBackgroundcolorBasedOnPokeType(pokemonType: pokemon.types[0].type.name)
+        titleView.backgroundColor = setupBackgroundcolorBasedOnPokeType(pokemonType: pokemon.types[0].type.name)
+        contentView.backgroundColor = setupBackgroundcolorBasedOnPokeType(pokemonType: pokemon.types[0].type.name)
+        
         cardView.layer.cornerRadius = 8
+        cardView.layer.masksToBounds = true
+        
+        cardView.layer.shadowRadius = 1
+        cardView.layer.shadowColor = UIColor.black.cgColor
+        cardView.layer.shadowOpacity = 0.80
+        cardView.layer.shadowOffset = CGSize(width: 0, height: -5)
     }
     
     //MARK: Return to dashboard
@@ -209,16 +211,16 @@ extension PokeDetailedViewController {
         progressSPD.progressTintColor = UIColor(named: pokemon.types[0].type.name)
         
         //definir a "porcentagem" do progresso (pega o valor e / maximo)
-        progressHP.progress = Float(pokemon.stats[0].base_stat) / 233
-        progressATK.progress = Float(pokemon.stats[1].base_stat) / 233
-        progressDEF.progress = Float(pokemon.stats[2].base_stat) / 233
-        progressSATK.progress = Float(pokemon.stats[3].base_stat) / 233
-        progressSDEF.progress = Float(pokemon.stats[4].base_stat) / 233
-        progressSPD.progress = Float(pokemon.stats[5].base_stat) / 233
+        progressHP.progress = calculateProgress(statValue: pokemon.stats[0].base_stat)
+        progressATK.progress = calculateProgress(statValue: pokemon.stats[1].base_stat)
+        progressDEF.progress = calculateProgress(statValue: pokemon.stats[2].base_stat)
+        progressSATK.progress = calculateProgress(statValue: pokemon.stats[3].base_stat)
+        progressSDEF.progress = calculateProgress(statValue: pokemon.stats[4].base_stat)
+        progressSPD.progress = calculateProgress(statValue: pokemon.stats[5].base_stat)
     }
     
-//    private func calculateProgress(statValue: Int) -> Float {
-//        return (Float(statValue) / 1000)
-//    }
+    private func calculateProgress(statValue: Int) -> Float {
+        return (Float(statValue) / 300)
+    }
     
 }

@@ -14,15 +14,18 @@ class DashboardViewController: HelperControler {
     @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    //Filter Modal
     @IBOutlet weak var filterModal: UIView!
     @IBOutlet weak var viewFilterInsideModal: UIView!
     @IBOutlet weak var numberOption: UIButton!
     @IBOutlet weak var nameOption: UIButton!
     
-    //booleans for the modal interaction
-    private var isFilterSelected: Bool = false
+    private var isAnyOptionAlreadySelected: Bool = false
+    private var isNameOptionSelected: Bool = false
+    private var isNumberOptionSelected: Bool = false
     
-    //attributes used in the project
+    //Main attributes used in the project
     private var pokemonArrayDB: [Pokemon] = []
     private var customizedPokemonArray: [Pokemon] = []
     private var apiRepository = APIRepository()
@@ -32,38 +35,31 @@ class DashboardViewController: HelperControler {
         self.navigationController?.isNavigationBarHidden = true
         startAllSetupFunctions()
         
-        getDataFromAPI { (numReqs, flag) in
-            if numReqs == 151 {
-                if flag {
-                    self.collectionView.reloadData()
-                    self.setupCustomArrayToDefault()
-                    self.dismissLoadinAlert(flag: true)
-                } else {
-                    self.dismissLoadinAlert(flag: true)
-                }
+        getDataFromAPI { (pokemonArrayCount, flag) in
+            if pokemonArrayCount == 151 {
+                self.collectionView.reloadData()
+                self.setupCustomArrayToDefault()
+                self.dismissLoadinAlert(flag: true)
             }
         }
 
     }
     
     //MARK: Main function to get data from the PokeAPI
-    private func getDataFromAPI(completion: @escaping (Int, Bool) -> Void) {
+    private func getDataFromAPI(completion: @escaping (Int?, Bool) -> Void) {
         showLoadingAlert()
-        
+
         apiRepository.getData(
-            completion: { (pokemon, flag, numReqs) in
-            guard let numReqs = numReqs else { return }
+            completion: { (pokemon, flag) in
             if let pokemon = pokemon {
                 self.apiRepository.getTextFromASpecificPokemon(pokemon: pokemon, completion: { text in
                     pokemon.pokemonText = text.replacingOccurrences(of: "\n", with: " ")
                 })
                 self.pokemonArrayDB.append(pokemon)
                 self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
-    //            print(self.pokemonArrayDB.count)
-    //            completion(self.pokemonArrayDB.count, flag)
-                completion(numReqs, flag)
+                completion(self.pokemonArrayDB.count, flag)
             } else {
-                completion(numReqs, flag)
+                completion(nil, flag)
             }
         })
     }
@@ -73,8 +69,7 @@ class DashboardViewController: HelperControler {
         setupVisualStructure()
         setupCollectionView()
         setupSearchBar()
-        setupActionForOptionBtts()
-//        showLoadingAlert()
+        setupModalOptionBtts()
     }
     
     private func setupVisualStructure() {
@@ -125,22 +120,65 @@ class DashboardViewController: HelperControler {
         )
     }
     
-    private func setupActionForOptionBtts() {
-//        numberOption.addAction(optionSelected(), for: .touchUpInside)
-        numberOption.addTarget(self, action: #selector(optionSelected), for: .touchUpInside)
-        nameOption.addTarget(self, action: #selector(optionSelected), for: .touchUpInside)
+    private func setupModalOptionBtts() {
+        numberOption.addTarget(self, action: #selector(selectNumber), for: .touchUpInside)
+        nameOption.addTarget(self, action: #selector(selectName), for: .touchUpInside)
     }
     
-    @objc private func optionSelected(btt: UIButton) {
-        guard let optionImage = btt.backgroundImage(for: .normal) else { return }
-        if optionImage == UIImage(named: "selectedBtt") {
-            btt.setBackgroundImage(UIImage(named: "unselectedBtt"), for: .normal)
-            isFilterSelected = false
-        } else if !isFilterSelected {
-            btt.setBackgroundImage(UIImage(named: "selectedBtt"), for: .normal)
-            isFilterSelected = true
+    @objc private func selectNumber() {
+//        print(
+//        """
+//            isNumberOptionSelected: \(isNumberOptionSelected),
+//            isNameOptionSelected: \(isNameOptionSelected),
+//            isAnyOptionAlreadySelected: \(isAnyOptionAlreadySelected)
+//            ==============
+//        """)
+        
+        if isNumberOptionSelected {
+            numberOption.setBackgroundImage(UIImage(named: "unselectedBtt"), for: .normal)
+            isNumberOptionSelected = false
+            isAnyOptionAlreadySelected = false
+        } else if isAnyOptionAlreadySelected {
+            nameOption.setBackgroundImage(UIImage(named: "unselectedBtt"), for: .normal)
+            isNameOptionSelected = false
+            
+            isNumberOptionSelected = true
+            numberOption.setBackgroundImage(UIImage(named: "selectedBtt"), for: .normal)
+        } else {
+            isNumberOptionSelected = true
+            isAnyOptionAlreadySelected = true
+            numberOption.setBackgroundImage(UIImage(named: "selectedBtt"), for: .normal)
         }
     }
+    
+    @objc private func selectName() {
+        if isNameOptionSelected {
+            nameOption.setBackgroundImage(UIImage(named: "unselectedBtt"), for: .normal)
+            isNameOptionSelected = false
+            isAnyOptionAlreadySelected = false
+        } else if isAnyOptionAlreadySelected {
+            numberOption.setBackgroundImage(UIImage(named: "unselectedBtt"), for: .normal)
+            isNumberOptionSelected = false
+            
+            isNameOptionSelected = true
+            nameOption.setBackgroundImage(UIImage(named: "selectedBtt"), for: .normal)
+        } else {
+            isNameOptionSelected = true
+            isAnyOptionAlreadySelected = true
+            nameOption.setBackgroundImage(UIImage(named: "selectedBtt"), for: .normal)
+        }
+    }
+    
+//    @objc private func optionSelected(btt: UIButton) {
+//        guard let optionImage = btt.backgroundImage(for: .normal) else { return }
+//        if optionImage == UIImage(named: "selectedBtt") {
+//            btt.setBackgroundImage(UIImage(named: "unselectedBtt"), for: .normal)
+//            isFilterSelected = false
+//        } else if !isFilterSelected {
+//            btt.setBackgroundImage(UIImage(named: "selectedBtt"), for: .normal)
+//            isFilterSelected = true
+//        }
+//    }
     
 }
 

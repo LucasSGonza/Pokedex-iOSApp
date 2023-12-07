@@ -13,6 +13,11 @@ class PokeText: Decodable {
     
     struct FlavorText: Decodable {
         var flavor_text: String
+        var language: Language
+    }
+    
+    struct Language: Decodable {
+        var name: String
     }
     
 }
