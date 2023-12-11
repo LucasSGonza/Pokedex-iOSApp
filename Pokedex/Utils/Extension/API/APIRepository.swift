@@ -10,11 +10,20 @@ import Alamofire
 
 class APIRepository: HelperControler {
     
+    private var numReqs: Int = 0
+    
+    private func getNumReqs() -> Int {
+        return self.numReqs
+    }
+    
+    private func setNumReqs(numReqs: Int) {
+        self.numReqs = numReqs
+    }
+    
     //https://www.logilax.com/swift-escaping-closure/#:~:text=In%20Swift%2C%20a%20closure%20marked,the%20surrounding%20function%20is%20gone”.
-    func getData(completion: @escaping (Pokemon?, Bool) -> Void) {
-
-        //tirei o acabou == 151 pq sempre dava true
+    func getData(completion: @escaping (Pokemon?, Bool, String?) -> Void) {
         
+        //ele sempre fará as 151 requisições
         for id in 1...151 {
             let url = "https://pokeapi.co/api/v2/pokemon/\(id)"
 //            let url = "https://pokeapi.co/api/v2/pokemon/q"
@@ -25,12 +34,30 @@ class APIRepository: HelperControler {
                             if let data = response.data {
                                 do {
                                     guard let pokemon: Pokemon = try? JSONDecoder().decode(Pokemon.self, from: data) else { return }
-                                    completion(pokemon, true)
+                                    self.setNumReqs(numReqs: (self.getNumReqs() + 1))
+                                    print("req: \(self.getNumReqs())")
+                                    
+                                    // se for o último pokemon, mandar junto a flag == true avisando isso
+                                    if self.getNumReqs() == 151 {
+                                        completion(pokemon, true, nil)
+                                    } else {
+                                        //contudo, caso a req não estar/chegar no final, irá mandar a flag false
+                                        completion(pokemon, false, nil)
+                                    }
                                 }
                             }
                             break
                         case .failure:
-                            completion(nil,false)
+                            guard let errorMessage = response.result.error?.localizedDescription else { return }
+                            
+                            self.setNumReqs(numReqs: (self.getNumReqs() + 1))
+                            
+                            if self.getNumReqs() == 151 {
+                                print(errorMessage)
+                                completion(nil, true, errorMessage)
+                            } else {
+                                completion(nil, false, errorMessage)
+                            }
                             break
                     }
                 }

@@ -30,39 +30,59 @@ class DashboardViewController: HelperControler {
     private var customizedPokemonArray: [Pokemon] = []
     private var apiRepository = APIRepository()
     
+    @IBOutlet weak var viewForError: UIView!
+    @IBOutlet weak var imageForError: UIImageView!
+    @IBOutlet weak var labelForError: UILabel!
+    @IBOutlet weak var tryAgainButtonForError: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
         startAllSetupFunctions()
-        
-        getDataFromAPI { (pokemonArrayCount, flag) in
-            if pokemonArrayCount == 151 {
-                self.collectionView.reloadData()
-                self.setupCustomArrayToDefault()
-                self.dismissLoadinAlert(flag: true)
-            }
-        }
-
+        getDataFromAPI()
     }
     
     //MARK: Main function to get data from the PokeAPI
-    private func getDataFromAPI(completion: @escaping (Int?, Bool) -> Void) {
+    private func getDataFromAPI() {
         showLoadingAlert()
-
         apiRepository.getData(
-            completion: { (pokemon, flag) in
+            /*
+             flag só é true quando acabar as reqs
+             pokemon só existe quando req.response == .success
+             sempre ocorrerá as 151 requisições
+             */
+            completion: { (pokemon, flag, reqMessage) in
             if let pokemon = pokemon {
                 self.apiRepository.getTextFromASpecificPokemon(pokemon: pokemon, completion: { text in
                     pokemon.pokemonText = text.replacingOccurrences(of: "\n", with: " ")
                 })
                 self.pokemonArrayDB.append(pokemon)
                 self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
-                completion(self.pokemonArrayDB.count, flag)
-            } else {
-                completion(nil, flag)
+                
+                if flag { //se tudo der certo (todas as reqs derem certo)
+                    self.collectionView.reloadData()
+                    self.setupCustomArrayToDefault()
+                    self.dismissLoadinAlert()
+                    self.viewForError.isHidden = true
+                }
+            }
+            //else trata o .failure da requisição, ou seja, se não der para criar um pokemon
+            else {
+                if flag {
+                    self.collectionView.reloadData()
+                    self.setupCustomArrayToDefault()
+                    self.dismissLoadinAlert()
+                    self.showErrorAlert(message: reqMessage)
+                    self.viewForError.isHidden = false
+                }
             }
         })
     }
+    
+    @IBAction func reloadDataFromAPI(_ sender: Any) {
+        getDataFromAPI()
+    }
+    
     
     //MARK: my setup functions
     private func startAllSetupFunctions() {
@@ -77,6 +97,7 @@ class DashboardViewController: HelperControler {
         filterButton.layer.cornerRadius = 16
         filterModal.layer.cornerRadius = 12
         viewFilterInsideModal.layer.cornerRadius = 8
+        tryAgainButtonForError.layer.cornerRadius = 8
         
 //        collectionView.layer.shadowRadius = 2
 //        collectionView.layer.shadowColor = UIColor.black.cgColor

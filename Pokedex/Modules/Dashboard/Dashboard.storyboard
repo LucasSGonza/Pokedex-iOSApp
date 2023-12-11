@@ -124,6 +124,45 @@
                                     <action selector="showFilterModal:" destination="nSU-0x-pDv" eventType="touchUpInside" id="lZJ-W1-Wdi"/>
                                 </connections>
                             </button>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="77C-nl-RSV">
+                                <rect key="frame" x="82" y="323" width="250" height="250"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="errorImage" translatesAutoresizingMaskIntoConstraints="NO" id="lFJ-g7-RYI">
+                                        <rect key="frame" x="0.0" y="0.0" width="250" height="150"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="150" id="dcs-4R-q5R"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error :(" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IIe-aQ-NIC">
+                                        <rect key="frame" x="101.5" y="180" width="47.5" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wyk-X9-VNi">
+                                        <rect key="frame" x="93.5" y="218" width="63" height="30"/>
+                                        <color key="backgroundColor" name="pokedex-red"/>
+                                        <state key="normal" title="Try again">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="reloadDataFromAPI:" destination="nSU-0x-pDv" eventType="touchUpInside" id="vTg-x1-fNP"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="250" id="3iY-6k-4Rk"/>
+                                    <constraint firstAttribute="trailing" secondItem="lFJ-g7-RYI" secondAttribute="trailing" id="3wv-IV-oGB"/>
+                                    <constraint firstItem="lFJ-g7-RYI" firstAttribute="top" secondItem="77C-nl-RSV" secondAttribute="top" id="9Oz-rQ-tv3"/>
+                                    <constraint firstItem="lFJ-g7-RYI" firstAttribute="leading" secondItem="77C-nl-RSV" secondAttribute="leading" id="Ajv-sw-HrJ"/>
+                                    <constraint firstItem="Wyk-X9-VNi" firstAttribute="top" secondItem="IIe-aQ-NIC" secondAttribute="bottom" constant="20" id="Kcb-gz-7cX"/>
+                                    <constraint firstAttribute="width" constant="250" id="MHy-6E-L7F"/>
+                                    <constraint firstItem="Wyk-X9-VNi" firstAttribute="centerX" secondItem="77C-nl-RSV" secondAttribute="centerX" id="cFh-dG-73i"/>
+                                    <constraint firstItem="IIe-aQ-NIC" firstAttribute="top" secondItem="lFJ-g7-RYI" secondAttribute="bottom" constant="30" id="wKU-sw-Q12"/>
+                                    <constraint firstItem="IIe-aQ-NIC" firstAttribute="centerX" secondItem="77C-nl-RSV" secondAttribute="centerX" id="wRl-6m-Ldq"/>
+                                </constraints>
+                            </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pokeballDashboard" translatesAutoresizingMaskIntoConstraints="NO" id="NgG-20-CTp">
                                 <rect key="frame" x="16" y="63" width="24" height="24"/>
                                 <constraints>
@@ -140,6 +179,7 @@
                             <constraint firstItem="LxJ-zg-LZ1" firstAttribute="top" secondItem="na3-Sq-FdY" secondAttribute="bottom" constant="3" id="CUF-fu-Q5e"/>
                             <constraint firstItem="i3J-Wy-EYi" firstAttribute="trailing" secondItem="d8O-E3-Jbf" secondAttribute="trailing" constant="12" id="LPT-lh-hod"/>
                             <constraint firstItem="i3J-Wy-EYi" firstAttribute="bottom" secondItem="d8O-E3-Jbf" secondAttribute="bottom" constant="12" id="MFw-e5-sCB"/>
+                            <constraint firstItem="77C-nl-RSV" firstAttribute="centerY" secondItem="FcG-Ce-Hm7" secondAttribute="centerY" id="O4S-Wd-dFR"/>
                             <constraint firstItem="na3-Sq-FdY" firstAttribute="top" secondItem="i3J-Wy-EYi" secondAttribute="top" constant="65" id="RRy-KK-3hI"/>
                             <constraint firstItem="NgG-20-CTp" firstAttribute="leading" secondItem="i3J-Wy-EYi" secondAttribute="leading" constant="16" id="ZHJ-jA-SQl"/>
                             <constraint firstItem="rQy-F8-aoO" firstAttribute="leading" secondItem="i3J-Wy-EYi" secondAttribute="leading" id="cxB-4E-gWX"/>
@@ -147,6 +187,7 @@
                             <constraint firstItem="d8O-E3-Jbf" firstAttribute="top" secondItem="rQy-F8-aoO" secondAttribute="bottom" constant="24" id="dXG-Cd-icb"/>
                             <constraint firstItem="d8O-E3-Jbf" firstAttribute="leading" secondItem="i3J-Wy-EYi" secondAttribute="leading" constant="12" id="eMY-Hn-pKp"/>
                             <constraint firstItem="i3J-Wy-EYi" firstAttribute="trailing" secondItem="na3-Sq-FdY" secondAttribute="trailing" constant="16" id="jR5-9q-iOU"/>
+                            <constraint firstItem="77C-nl-RSV" firstAttribute="centerX" secondItem="FcG-Ce-Hm7" secondAttribute="centerX" id="mbB-g0-cVb"/>
                             <constraint firstItem="i3J-Wy-EYi" firstAttribute="trailing" secondItem="LxJ-zg-LZ1" secondAttribute="trailing" constant="16" id="neG-5N-xAn"/>
                             <constraint firstItem="na3-Sq-FdY" firstAttribute="leading" secondItem="rQy-F8-aoO" secondAttribute="trailing" constant="16" id="nk7-n8-z2r"/>
                             <constraint firstItem="NgG-20-CTp" firstAttribute="top" secondItem="i3J-Wy-EYi" secondAttribute="top" constant="19" id="x1l-dn-elS"/>
@@ -157,10 +198,14 @@
                         <outlet property="collectionView" destination="d8O-E3-Jbf" id="sej-m5-sYq"/>
                         <outlet property="filterButton" destination="na3-Sq-FdY" id="N3z-Qp-aNH"/>
                         <outlet property="filterModal" destination="LxJ-zg-LZ1" id="694-Ik-vQN"/>
+                        <outlet property="imageForError" destination="lFJ-g7-RYI" id="rtF-tU-WCQ"/>
+                        <outlet property="labelForError" destination="IIe-aQ-NIC" id="d7u-Um-9uf"/>
                         <outlet property="nameOption" destination="Az9-Jc-aIy" id="Elv-fW-bRW"/>
                         <outlet property="numberOption" destination="YLk-12-hOa" id="j7A-Yw-Jxo"/>
                         <outlet property="searchBar" destination="rQy-F8-aoO" id="xZR-ht-W05"/>
+                        <outlet property="tryAgainButtonForError" destination="Wyk-X9-VNi" id="ALz-j7-j2j"/>
                         <outlet property="viewFilterInsideModal" destination="WNP-lg-1h0" id="mrU-7T-312"/>
+                        <outlet property="viewForError" destination="77C-nl-RSV" id="DM5-AY-goF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oxY-8E-3Fq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -170,6 +215,7 @@
     </scenes>
     <resources>
         <image name="defaultFilter" width="12" height="8"/>
+        <image name="errorImage" width="977" height="641"/>
         <image name="pokeballDashboard" width="206" height="208"/>
         <image name="unselectedBtt" width="16" height="16"/>
         <namedColor name="AccentColor">
