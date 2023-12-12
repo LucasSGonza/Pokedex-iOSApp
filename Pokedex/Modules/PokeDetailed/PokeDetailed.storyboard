@@ -430,6 +430,9 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PGF-5w-QqW" userLabel="Body">
                                                 <rect key="frame" x="4" y="0.0" width="406" height="144"/>
                                                 <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pokeballBackground" translatesAutoresizingMaskIntoConstraints="NO" id="ReO-IC-E0s">
+                                                        <rect key="frame" x="200" y="0.0" width="206" height="208"/>
+                                                    </imageView>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPokemon" translatesAutoresizingMaskIntoConstraints="NO" id="ftH-Bc-cYc">
                                                         <rect key="frame" x="103" y="0.0" width="200" height="200"/>
                                                         <constraints>
@@ -456,10 +459,12 @@
                                                 <constraints>
                                                     <constraint firstItem="ftH-Bc-cYc" firstAttribute="top" secondItem="PGF-5w-QqW" secondAttribute="top" id="1hD-ck-wLK"/>
                                                     <constraint firstItem="ftH-Bc-cYc" firstAttribute="centerX" secondItem="PGF-5w-QqW" secondAttribute="centerX" id="DoT-Cn-doZ"/>
+                                                    <constraint firstAttribute="trailing" secondItem="ReO-IC-E0s" secondAttribute="trailing" id="FKG-KJ-tb6"/>
                                                     <constraint firstAttribute="bottom" secondItem="p8Y-AY-tS3" secondAttribute="bottom" constant="16" id="FzM-Tr-cbb"/>
                                                     <constraint firstAttribute="trailing" secondItem="p8Y-AY-tS3" secondAttribute="trailing" constant="20" id="Hed-fN-3pe"/>
                                                     <constraint firstAttribute="height" constant="144" id="NkN-4m-hKB"/>
                                                     <constraint firstItem="NWm-jS-La6" firstAttribute="leading" secondItem="PGF-5w-QqW" secondAttribute="leading" constant="20" id="ZIi-SE-Z9f"/>
+                                                    <constraint firstItem="ReO-IC-E0s" firstAttribute="top" secondItem="PGF-5w-QqW" secondAttribute="top" id="sdM-OR-ht7"/>
                                                     <constraint firstAttribute="bottom" secondItem="NWm-jS-La6" secondAttribute="bottom" constant="16" id="zSx-uD-IdX"/>
                                                 </constraints>
                                             </view>
@@ -509,6 +514,7 @@
                         <outlet property="leftArrow" destination="NWm-jS-La6" id="cQf-9J-hnZ"/>
                         <outlet property="movesLabel" destination="J0r-Sl-X3Y" id="MpX-XY-BW2"/>
                         <outlet property="pokeATK" destination="FCJ-vd-umJ" id="GdH-ij-oOk"/>
+                        <outlet property="pokeBallBackground" destination="ReO-IC-E0s" id="VM8-8z-Fxz"/>
                         <outlet property="pokeDEF" destination="sVC-SF-p0L" id="wg8-Pi-w6O"/>
                         <outlet property="pokeHP" destination="NWe-BA-1xy" id="Gxr-rW-4gD"/>
                         <outlet property="pokeIDLabel" destination="D2Z-UM-uKj" id="PGk-0I-GPl"/>
@@ -542,6 +548,7 @@
         <image name="divider" width="1" height="96"/>
         <image name="height" width="40" height="24"/>
         <image name="leftArrow" width="15" height="20"/>
+        <image name="pokeballBackground" width="206" height="208"/>
         <image name="rightArrow" width="16" height="20"/>
         <image name="weight" width="34" height="37"/>
         <namedColor name="defaultBackground">

@@ -13,12 +13,27 @@ class HelperControler: UIViewController {
 //    enum APIErrors {
 //        case <#case#>
 //    }
+    var alert: UIAlertController = UIAlertController()
     
     var alertForLoading = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
     var alertForError: UIAlertController = UIAlertController(title: "Error", message: "Failed to load data from API", preferredStyle: .alert)
     
-    //MARK: loading screen
-    func showLoadingAlert() {
+    func setupAlertTeste(title: String?, message: String, completion: (() -> Void)? = nil) {
+        alert.title = title ?? nil
+        alert.message = message
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: {_ in completion?()}))
+    }
+    
+    func showAlertTest() {
+        self.present(alert, animated: true, completion: nil)
+    }
+    func dissmissAlertTest(){
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    //func to setupAlerts
+    func setupAlerts(completion: (() -> Void)? = nil) {
+        alertForError.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in completion?()}))
         alertForLoading.view.tintColor = UIColor.black
         
         let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(x:10, y:5, width: 50, height:50)) as UIActivityIndicatorView
@@ -27,17 +42,20 @@ class HelperControler: UIViewController {
         loadingIndicator.startAnimating();
 
         alertForLoading.view.addSubview(loadingIndicator)
+    }
+    
+    //MARK: loading screen
+    func showLoadingAlert() {
         self.present(alertForLoading, animated: true, completion: nil)
     }
     
     func dismissLoadinAlert() {
-//        alertForLoading.dismiss(animated: true, completion: nil)
         self.dismiss(animated: true, completion: nil)
     }
     
+    //MARK: error alert
     //completion: (() -> Void)? = nil
-    func showErrorAlert(message: String?, completion: (() -> Void)? = nil) {
-        self.alertForError.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in completion?()}))
+    func showErrorAlert(message: String?) {
         if let message = message {
             self.alertForError.message = message
         }

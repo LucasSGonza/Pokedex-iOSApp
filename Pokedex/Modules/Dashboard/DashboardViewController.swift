@@ -14,6 +14,7 @@ class DashboardViewController: HelperControler {
     @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var centralView: UIView!
     
     //Filter Modal
     @IBOutlet weak var filterModal: UIView!
@@ -34,6 +35,7 @@ class DashboardViewController: HelperControler {
     @IBOutlet weak var imageForError: UIImageView!
     @IBOutlet weak var labelForError: UILabel!
     @IBOutlet weak var tryAgainButtonForError: UIButton!
+    @IBOutlet weak var tryAgainButtonForError2: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +47,9 @@ class DashboardViewController: HelperControler {
     //MARK: Main function to get data from the PokeAPI
     private func getDataFromAPI() {
         showLoadingAlert()
+        
+        setupScreenToEmptyState()
+        
         apiRepository.getData(
             /*
              flag só é true quando acabar as reqs
@@ -64,11 +69,18 @@ class DashboardViewController: HelperControler {
                     self.setupCustomArrayToDefault()
                     self.dismissLoadinAlert()
                     self.viewForError.isHidden = true
+                    if self.pokemonArrayDB.count != 151 {
+                        self.setupAlertTeste(title: "Error", message: "Not all pokemons were loaded from the API!")
+                        self.showAlertTest()
+                    }
                 }
             }
             //else trata o .failure da requisição, ou seja, se não der para criar um pokemon
             else {
                 if flag {
+                    if self.pokemonArrayDB.count < 10 {
+                        self.setupScreenToEmptyState()
+                    }
                     self.collectionView.reloadData()
                     self.setupCustomArrayToDefault()
                     self.dismissLoadinAlert()
@@ -79,10 +91,10 @@ class DashboardViewController: HelperControler {
         })
     }
     
+    //MARK: reload data from API
     @IBAction func reloadDataFromAPI(_ sender: Any) {
         getDataFromAPI()
     }
-    
     
     //MARK: my setup functions
     private func startAllSetupFunctions() {
@@ -90,29 +102,44 @@ class DashboardViewController: HelperControler {
         setupCollectionView()
         setupSearchBar()
         setupModalOptionBtts()
+        setupAlerts()
     }
     
+    //used when an error occurs
+    private func setupScreenToEmptyState() {
+        viewForError.isHidden = true
+        pokemonArrayDB.removeAll()
+        customizedPokemonArray.removeAll()
+        filterButton.isUserInteractionEnabled = false
+    }
+    
+    //setup the visual of the components from the ViewController
     private func setupVisualStructure() {
         filterButton.backgroundColor = UIColor.white
         filterButton.layer.cornerRadius = 16
         filterModal.layer.cornerRadius = 12
+        
+        centralView.layer.cornerRadius = 16
+        
         viewFilterInsideModal.layer.cornerRadius = 8
         tryAgainButtonForError.layer.cornerRadius = 8
-        
-//        collectionView.layer.shadowRadius = 2
-//        collectionView.layer.shadowColor = UIColor.black.cgColor
-//        collectionView.layer.shadowOpacity = 0.80
-//        collectionView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        tryAgainButtonForError2.layer.cornerRadius = 16
     }
     
     private func setupCollectionView() {
         //visual
         collectionView.backgroundColor = UIColor.white
         collectionView.layer.cornerRadius = 16
+        collectionView.layer.masksToBounds = true
         
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(UINib(nibName: "CollectionViewPokeCell", bundle: nil), forCellWithReuseIdentifier: "PokeCell")
+        
+        collectionView.layer.shadowRadius = 14
+        collectionView.layer.shadowColor = UIColor.black.cgColor
+        collectionView.layer.shadowOpacity = 0.1
+        collectionView.layer.shadowOffset = CGSize(width: 0, height: 0)
     }
     
     private func setupSearchBar() {
@@ -121,6 +148,8 @@ class DashboardViewController: HelperControler {
         searchBar.searchTextField.leftView?.tintColor = UIColor(named: "pokedex-red")
         searchBar.tintColor = UIColor.black
         searchBar.searchTextField.textColor = UIColor.black
+        searchBar.showsCancelButton = false
+        searchBar.keyboardType = .alphabet
         
         searchBar.delegate = self
     }
@@ -144,6 +173,16 @@ class DashboardViewController: HelperControler {
     private func setupModalOptionBtts() {
         numberOption.addTarget(self, action: #selector(selectNumber), for: .touchUpInside)
         nameOption.addTarget(self, action: #selector(selectName), for: .touchUpInside)
+    }
+    
+    private func setupFilterBasedInModal() {
+        if isNumberOptionSelected {
+            searchBar.keyboardType = .phonePad
+        } else {
+            searchBar.keyboardType = .alphabet
+        }
+        self.view.endEditing(true)
+        searchBar.becomeFirstResponder()
     }
     
     @objc private func selectNumber() {
@@ -170,6 +209,8 @@ class DashboardViewController: HelperControler {
             isAnyOptionAlreadySelected = true
             numberOption.setBackgroundImage(UIImage(named: "selectedBtt"), for: .normal)
         }
+        
+        setupFilterBasedInModal()
     }
     
     @objc private func selectName() {
@@ -188,18 +229,9 @@ class DashboardViewController: HelperControler {
             isAnyOptionAlreadySelected = true
             nameOption.setBackgroundImage(UIImage(named: "selectedBtt"), for: .normal)
         }
+        
+        setupFilterBasedInModal()
     }
-    
-//    @objc private func optionSelected(btt: UIButton) {
-//        guard let optionImage = btt.backgroundImage(for: .normal) else { return }
-//        if optionImage == UIImage(named: "selectedBtt") {
-//            btt.setBackgroundImage(UIImage(named: "unselectedBtt"), for: .normal)
-//            isFilterSelected = false
-//        } else if !isFilterSelected {
-//            btt.setBackgroundImage(UIImage(named: "selectedBtt"), for: .normal)
-//            isFilterSelected = true
-//        }
-//    }
     
 }
 
@@ -253,6 +285,19 @@ extension DashboardViewController: UISearchBarDelegate {
             }
         }
         collectionView.reloadData()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        filterModal.isHidden = true
+        setupCustomArrayToDefault()
+        collectionView.reloadData()
+        self.view.endEditing(true)
     }
     
 }

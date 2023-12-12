@@ -46,11 +46,12 @@ class PokeDetailedViewController: HelperControler {
     @IBOutlet weak var progressSDEF: UIProgressView!
     @IBOutlet weak var progressSPD: UIProgressView!
     
-    //View's
+    //View's and imageView's
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var bodyView: UIView!
     @IBOutlet weak var cardView: UIView!
+    @IBOutlet weak var pokeBallBackground: UIImageView!
     
     //To change pokemon
     @IBOutlet weak var leftArrow: UIButton!
@@ -96,6 +97,8 @@ class PokeDetailedViewController: HelperControler {
     private func setupPokemonInfos() {
         //sempre criará um novo pokemon, baseado no ID atual
         guard let pokemonArray = self.pokemonArray, let pokemon = pokemonArray.first(where: {$0.id == pokemonID}) else { return }
+        
+        pokeBallBackground.layer.opacity = 0.2
         
         pokeNameLabel.text = pokemon.name
         pokeIDLabel.text = setupVisualForId(id: pokemon.id)
@@ -161,10 +164,10 @@ class PokeDetailedViewController: HelperControler {
         cardView.layer.cornerRadius = 8
         cardView.layer.masksToBounds = true
         
-        cardView.layer.shadowRadius = 1
+        cardView.layer.shadowRadius = 14
         cardView.layer.shadowColor = UIColor.black.cgColor
-        cardView.layer.shadowOpacity = 0.80
-        cardView.layer.shadowOffset = CGSize(width: 0, height: -5)
+        cardView.layer.shadowOpacity = 0.1
+        cardView.layer.shadowOffset = CGSize(width: 0, height: 0)
     }
     
     //MARK: Return to dashboard
@@ -188,8 +191,24 @@ class PokeDetailedViewController: HelperControler {
     
     //MARK: func to hide or not the arrow's to change between pokemons
     private func isFirstOrLastPokemon(pokemonID: Int) {
-        leftArrow.isHidden = (pokemonID == 1 ? true : false)
-        rightArrow.isHidden = (pokemonID == 151 ? true : false)
+        guard let pokemonArray = pokemonArray else { return }
+
+//        print(pokemonArray.first(where: {$0.id == pokemonID - 1})?.name ?? "nil")
+        
+        if pokemonArray.first(where: {$0.id == pokemonID - 1}) != nil {
+            leftArrow.isHidden = (pokemonID == 1 ? true : false)
+        } else {
+            leftArrow.isHidden = true
+        }
+        
+        if pokemonArray.first(where: {$0.id == pokemonID + 1}) != nil {
+            rightArrow.isHidden = (pokemonID == 151 ? true : false)
+        } else {
+            rightArrow.isHidden = true
+        }
+        
+//        leftArrow.isHidden = (pokemonID == 1 ? true : false)
+//        rightArrow.isHidden = (pokemonID == 151 ? true : false)
     }
     
 }
