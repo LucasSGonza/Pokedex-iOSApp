@@ -249,9 +249,6 @@ class DashboardViewController: HelperControler {
     
 }
 
-//https://www.youtube.com/watch?v=TQOhsyWUhwg
-//https://stackoverflow.com/questions/13970950/uicollectionview-spacing-margins
-
 //MARK: CollectionView
 extension DashboardViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -287,10 +284,6 @@ extension DashboardViewController: UICollectionViewDelegateFlowLayout {
 
 //MARK: SearchBar
 extension DashboardViewController: UISearchBarDelegate {
-    
-    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        print("a")
-    }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         

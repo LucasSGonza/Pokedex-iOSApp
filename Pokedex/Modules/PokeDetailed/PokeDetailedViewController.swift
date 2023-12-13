@@ -60,28 +60,6 @@ class PokeDetailedViewController: HelperControler {
     private var pokemonID: Int?
     private var pokemonArray: [Pokemon]?
     
-    //https://blog.logrocket.com/swift-enums-an-overview-with-examples/
-//    enum BackgroundColors: String, CaseIterable {
-//        case bug = "bug"
-//        case dark = "dark"
-//        case dragon = "dragon"
-//        case electric = "electric"
-//        case fairy
-//        case fighting
-//        case fire
-//        case flying
-//        case ghost
-//        case normal
-//        case grass
-//        case ground
-//        case ice
-//        case poison
-//        case psychic
-//        case rock
-//        case steel
-//        case water
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPokemonInfos()
@@ -213,7 +191,6 @@ class PokeDetailedViewController: HelperControler {
     
 }
 
-//https://www.digitalocean.com/community/tutorials/ios-progress-bar-progress-view
 //MARK: setup ProgressView
 extension PokeDetailedViewController {
     

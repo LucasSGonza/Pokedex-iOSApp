@@ -20,7 +20,6 @@ class APIRepository: HelperControler {
         self.numReqs = numReqs
     }
     
-    //https://www.logilax.com/swift-escaping-closure/#:~:text=In%20Swift%2C%20a%20closure%20marked,the%20surrounding%20function%20is%20gone”.
     func getData(completion: @escaping (Pokemon?, Bool, String?) -> Void) {
         setNumReqs(numReqs: 0)
         //ele sempre fará as 151 requisições
