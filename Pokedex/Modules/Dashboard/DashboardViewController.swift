@@ -35,7 +35,6 @@ class DashboardViewController: HelperControler {
     @IBOutlet weak var imageForError: UIImageView!
     @IBOutlet weak var labelForError: UILabel!
     @IBOutlet weak var tryAgainButtonForError: UIButton!
-    @IBOutlet weak var tryAgainButtonForError2: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,28 +63,49 @@ class DashboardViewController: HelperControler {
                 self.pokemonArrayDB.append(pokemon)
                 self.pokemonArrayDB = self.pokemonArrayDB.sorted{ $0.id < $1.id }
                 
-                if flag { //se tudo der certo (todas as reqs derem certo)
+                if flag { //quando acabar as reqs
+                    
+                    //caso esteja rodando o refresh da collection, tira-lo
+                    if self.refreshControl.isRefreshing {
+                        self.refreshControl.endRefreshing()
+                    }
+                    
+                    //procedimento padrão de sucesso
                     self.collectionView.reloadData()
                     self.setupCustomArrayToDefault()
                     self.dismissLoadinAlert()
                     self.viewForError.isHidden = true
+                    self.searchBar.isUserInteractionEnabled = true
+                    self.filterButton.isUserInteractionEnabled = true
+                    
+                    //caso não tenha vindo todos os pokemons esperados, avisar o usuário
                     if self.pokemonArrayDB.count != 151 {
-                        self.setupAlertTeste(title: "Error", message: "Not all pokemons were loaded from the API!")
-                        self.showAlertTest()
+                        self.setupAlertForInformation(title: "Warning!", message: "Not all pokemons were loaded from the API!")
+                        self.showAlertForInformation()
                     }
                 }
             }
             //else trata o .failure da requisição, ou seja, se não der para criar um pokemon
             else {
                 if flag {
+                    //caso nao exista esse num minimo de pokemons, apresenta erro para tentar novamente
                     if self.pokemonArrayDB.count < 10 {
                         self.setupScreenToEmptyState()
                     }
+                    
+                    //caso esteja rodando o refresh da collection, tira-lo
+                    if self.refreshControl.isRefreshing {
+                        self.refreshControl.endRefreshing()
+                    }
+                    
+                    //procedimento padrão de erro
                     self.collectionView.reloadData()
                     self.setupCustomArrayToDefault()
                     self.dismissLoadinAlert()
                     self.showErrorAlert(message: reqMessage)
                     self.viewForError.isHidden = false
+                    self.searchBar.isUserInteractionEnabled = false
+                    self.filterButton.isUserInteractionEnabled = false
                 }
             }
         })
@@ -95,7 +115,7 @@ class DashboardViewController: HelperControler {
     @IBAction func reloadDataFromAPI(_ sender: Any) {
         getDataFromAPI()
     }
-    
+
     //MARK: my setup functions
     private func startAllSetupFunctions() {
         setupVisualStructure()
@@ -110,7 +130,6 @@ class DashboardViewController: HelperControler {
         viewForError.isHidden = true
         pokemonArrayDB.removeAll()
         customizedPokemonArray.removeAll()
-        filterButton.isUserInteractionEnabled = false
     }
     
     //setup the visual of the components from the ViewController
@@ -123,7 +142,6 @@ class DashboardViewController: HelperControler {
         
         viewFilterInsideModal.layer.cornerRadius = 8
         tryAgainButtonForError.layer.cornerRadius = 8
-        tryAgainButtonForError2.layer.cornerRadius = 16
     }
     
     private func setupCollectionView() {
@@ -140,6 +158,10 @@ class DashboardViewController: HelperControler {
         collectionView.layer.shadowColor = UIColor.black.cgColor
         collectionView.layer.shadowOpacity = 0.1
         collectionView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        
+        refreshControl.tintColor = UIColor.black
+        refreshControl.addTarget(self, action: #selector(reloadDataFromAPI), for: .valueChanged)
+        collectionView.addSubview(refreshControl)
     }
     
     private func setupSearchBar() {
@@ -186,14 +208,6 @@ class DashboardViewController: HelperControler {
     }
     
     @objc private func selectNumber() {
-//        print(
-//        """
-//            isNumberOptionSelected: \(isNumberOptionSelected),
-//            isNameOptionSelected: \(isNameOptionSelected),
-//            isAnyOptionAlreadySelected: \(isAnyOptionAlreadySelected)
-//            ==============
-//        """)
-        
         if isNumberOptionSelected {
             numberOption.setBackgroundImage(UIImage(named: "unselectedBtt"), for: .normal)
             isNumberOptionSelected = false
@@ -274,6 +288,10 @@ extension DashboardViewController: UICollectionViewDelegateFlowLayout {
 //MARK: SearchBar
 extension DashboardViewController: UISearchBarDelegate {
     
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        print("a")
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         setupCustomArrayToDefault()
@@ -290,7 +308,7 @@ extension DashboardViewController: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = true
     }
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
         searchBar.text = ""

@@ -156,10 +156,10 @@ class PokeDetailedViewController: HelperControler {
     
     //MARK: Change background visual color, based in the pokemon first type
     private func setupScreenVisual(pokemon: Pokemon) {
-        self.view.backgroundColor = setupBackgroundcolorBasedOnPokeType(pokemonType: pokemon.types[0].type.name)
-        bodyView.backgroundColor = setupBackgroundcolorBasedOnPokeType(pokemonType: pokemon.types[0].type.name)
-        titleView.backgroundColor = setupBackgroundcolorBasedOnPokeType(pokemonType: pokemon.types[0].type.name)
-        contentView.backgroundColor = setupBackgroundcolorBasedOnPokeType(pokemonType: pokemon.types[0].type.name)
+        self.view.backgroundColor = setupBackgroundColorBasedOnPokeType(pokemonType: pokemon.types[0].type.name)
+        bodyView.backgroundColor = setupBackgroundColorBasedOnPokeType(pokemonType: pokemon.types[0].type.name)
+        titleView.backgroundColor = setupBackgroundColorBasedOnPokeType(pokemonType: pokemon.types[0].type.name)
+        contentView.backgroundColor = setupBackgroundColorBasedOnPokeType(pokemonType: pokemon.types[0].type.name)
         
         cardView.layer.cornerRadius = 8
         cardView.layer.masksToBounds = true

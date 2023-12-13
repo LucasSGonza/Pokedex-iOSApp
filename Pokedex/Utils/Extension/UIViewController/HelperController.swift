@@ -10,30 +10,32 @@ import UIKit
 
 class HelperControler: UIViewController {
     
-//    enum APIErrors {
-//        case <#case#>
-//    }
-    var alert: UIAlertController = UIAlertController()
-    
+    var alertForInformation = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
     var alertForLoading = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
-    var alertForError: UIAlertController = UIAlertController(title: "Error", message: "Failed to load data from API", preferredStyle: .alert)
+    var alertForError = UIAlertController(title: "Error", message: "Failed to load data from API", preferredStyle: .alert)
     
-    func setupAlertTeste(title: String?, message: String, completion: (() -> Void)? = nil) {
-        alert.title = title ?? nil
-        alert.message = message
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: {_ in completion?()}))
+    var refreshControl = UIRefreshControl()
+    
+    //MARK:Alert for Infos
+    func setupAlertForInformation(title: String?, message: String, completion: (() -> Void)? = nil) {
+        alertForInformation.title = title ?? nil
+        alertForInformation.message = message
+        alertForInformation.addAction(UIAlertAction(title: "Ok", style: .default, handler: {_ in completion?()}))
     }
     
-    func showAlertTest() {
-        self.present(alert, animated: true, completion: nil)
-    }
-    func dissmissAlertTest(){
-        self.dismiss(animated: true, completion: nil)
+    func showAlertForInformation() {
+        self.present(alertForInformation, animated: true, completion: nil)
     }
     
-    //func to setupAlerts
-    func setupAlerts(completion: (() -> Void)? = nil) {
-        alertForError.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in completion?()}))
+    //MARK: func for the setup Alert's
+    func setupAlerts() {
+        setupLoadingAlert()
+        setupErrorAlert()
+    }
+    
+    //MARK: Loading Alert
+    
+    func setupLoadingAlert(completion: (() -> Void)? = nil) {
         alertForLoading.view.tintColor = UIColor.black
         
         let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(x:10, y:5, width: 50, height:50)) as UIActivityIndicatorView
@@ -44,7 +46,6 @@ class HelperControler: UIViewController {
         alertForLoading.view.addSubview(loadingIndicator)
     }
     
-    //MARK: loading screen
     func showLoadingAlert() {
         self.present(alertForLoading, animated: true, completion: nil)
     }
@@ -53,8 +54,11 @@ class HelperControler: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    //MARK: error alert
-    //completion: (() -> Void)? = nil
+    //MARK: Error alert
+    func setupErrorAlert(completion: (() -> Void)? = nil){
+        alertForError.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in completion?()}))
+    }
+    
     func showErrorAlert(message: String?) {
         if let message = message {
             self.alertForError.message = message
@@ -62,6 +66,7 @@ class HelperControler: UIViewController {
         self.present(alertForError, animated: true, completion: nil)
     }
     
+    //MARK: func to setup visual
     func setupVisualForId (id: Int) -> String {
         switch true {
         case id < 10:
@@ -94,7 +99,7 @@ class HelperControler: UIViewController {
         }
     }
     
-    func setupBackgroundcolorBasedOnPokeType (pokemonType: String) -> UIColor {
+    func setupBackgroundColorBasedOnPokeType (pokemonType: String) -> UIColor {
         return UIColor(named: pokemonType) ?? UIColor(named: "defaultBackground") ?? UIColor.gray
     }
     
